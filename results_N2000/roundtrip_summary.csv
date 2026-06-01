@@ -1,0 +1,5 @@
+﻿attr,n,exact_agreement,within1_agreement,mean_abs_err,weighted_kappa,type
+authority_deference,2000,0.6,0.966,0.4495,0.8749,likert
+digital_literacy,2000,0.6145,0.9165,0.5875,0.7304,likert
+financial_vulnerability,2000,0.5805,0.9615,0.462,0.8792,likert
+social_isolation,2000,0.734,0.966,0.329,0.8852,likert

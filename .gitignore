@@ -37,10 +37,16 @@ _archive/
 # Private human re-read answer key (never publish)
 results/human_reread_key.csv
 results/human_reread_sheet*.xlsx
-results/face_validity_rater_*.xlsx
 # Logs
 *.log
 
 # --- Internal working notes / review records / strategy / unpublished-paper links: NEVER publish ---
 manuscript/_*
 manuscript/EXTERNAL_*
+
+# --- Public-safe aggregate CSVs in subfolders (the *.csv rule above also caught these) ---
+!config/anchors/*.csv
+!results_N2000/*.csv
+!results_xmodel/*.csv
+# re-assert: the private human re-read key stays ignored regardless of the rescues above
+results/human_reread_key.csv
