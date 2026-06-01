@@ -1,0 +1,33 @@
+KVRB Route-B step B2 — observed PV x RP joint (KCVS 2018): results (2026-05-31)
+Builder: src/build_anchor_kcvs_joint.py -> config/anchors/kcvs_joint_b2.csv
+Sampler: src/enrich_stage1.py --b2  (draws the nested 3-outcome joint per age x sex x edu cell)
+
+WHAT B2 DOES
+  Replaces independent sampling of prior_victimization (PV) and reporting_propensity (RP) with a draw
+  from the empirical KCVS joint. RP is defined only for victims (report-to-police item c24), so the
+  joint is a nested 3-outcome distribution per cell:
+    nonvictim / victim_unreported / victim_reported
+  This (a) preserves the real covariance KCVS measured (victimization rate x conditional report rate)
+  and (b) fixes a coherence bug: independent sampling had assigned RP to non-victims, for whom the
+  construct is undefined.
+
+JOINT ANCHOR (N=12,601 KCVS respondents; 18/20 cells at full age+sex+edu, 2 at age+sex)
+  overall: nonvictim 96.2%, victim_unreported 2.9%, victim_reported 0.9%; report-rate|victim 23.4%.
+
+REALIZED IN 1M (--b2)
+  victimization rate 3.67% ; report-rate among victims 22.9% (matches observed).
+  COHERENCE: RP = -1 (N/A) for all 963,350 non-victims; RP in {0,1} only for the 36,650 victims.
+             violations: PV0&RP!=-1 = 0 ; PV1&RP==-1 = 0.
+  F6' JOINT FIDELITY: synthetic vs observed KCVS joint, per-cell TVD max 0.0019, mean 0.0008
+                      -> the dataset reproduces the observed within-survey joint by construction.
+
+SCOPE (honest)
+  PV x RP is the ONE observable within-survey joint (B0). AD x SI is NOT observable (disjoint KGSS
+  waves) and stays at the B1 + B3 (conditional-independence) level. Cross-block joints remain
+  shared-demographic conditioning (B1) + stated conditional independence (B3). B2 therefore adds
+  exactly one measured joint, and the dataset is explicit about it.
+
+ARTIFACTS
+  config/anchors/kcvs_joint_b2.csv (+ .source.json)
+  results/F6prime_pvrp_joint_b2.png  (A: per-cell joint fidelity scatter on y=x; B: report-rate by age)
+NEXT: FV B1 extension (가금복) ; C1 out-of-sample external check.

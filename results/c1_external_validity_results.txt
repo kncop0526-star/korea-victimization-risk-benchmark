@@ -1,0 +1,31 @@
+KVRB C1 — out-of-sample external validity (2026-05-31)
+Question (reviewer C1): predict ONE statistic the dataset never ingested.
+
+INGESTED:  digital_literacy is anchored on the 디지털정보격차 실태조사 활용역량 (Q8 competency items).
+NOT INGESTED: internet-use RATE by age (인터넷이용실태조사 / Survey on Internet Use, MSIT-NIA/KISA).
+              Different instrument, different national survey, different construct (use vs competency).
+
+TEST: does KVRB's digital-competency gradient by age predict the external internet-use-rate gradient?
+
+KVRB digital_literacy by age band (1M):
+  % high (level 4-5):  19-29 67.1 | 30-44 59.7 | 45-59 28.9 | 60-74 6.7 | 75+ 5.3
+  % low  (level 1-2):  19-29 6.9  | 30-44 10.8 | 45-59 37.4 | 60-74 78.1 | 75+ 93.6
+  mean level:          3.98 / 3.77 / 2.93 / 1.83 / 1.31
+External internet-use rate by age (인터넷이용실태조사; ~99% 10s-50s, 60s ~94%, 70+ ~64% in 2023):
+  mapped to KVRB bands (approx): 99.9 / 99.9 / 98.5 / 85.0 / 52.0
+
+RESULT
+  Spearman rank correlation (KVRB %high-DL vs external use-rate) = 0.975 (p = 0.005).
+  Both show the elderly cliff: KVRB %high-DL 28.9 -> 5.3 across 45-59 -> 75+; external 98.5 -> 52.0.
+  => Convergent validity across two independent instruments: the competency-anchored attribute, which
+     never saw usage rates, rank-predicts the externally measured age gradient of internet use. This
+     converts the §4.1 fidelity check from a sampler-check into an out-of-sample validation.
+
+CAVEATS (honest)
+  - The external per-band figures are approximate (published series give 60세이상 81.1%, 70대이상 64.4%
+    for 2023, ~99% for 10s-50s); the test is RANK-based and robust to the exact elderly values.
+  - Convergent validity (competency predicts use), not identity; Pearson r=0.74 is lower than the rank
+    rho because the two scales are not linearly comparable. Rank agreement is the correct, near-perfect
+    metric here.
+ARTIFACT: results/C1_external_validity.png
+Sources: 인터넷이용실태조사 (MSIT/NIA) 2023-2024; KOSIS internet-use-rate-by-age series.

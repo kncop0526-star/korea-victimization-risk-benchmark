@@ -1,0 +1,13 @@
+﻿attr,protected,marginal_V,residual_V,n_cells,justified_on
+financial_vulnerability,sex,0.0046,0.003,5,age_band
+financial_vulnerability,province,0.012,0.009,5,age_band
+digital_literacy,sex,0.0766,0.0048,10,age_band+education_tier
+digital_literacy,province,0.0485,0.0117,10,age_band+education_tier
+authority_deference,sex,0.0157,0.0042,5,age_band
+authority_deference,province,0.0146,0.0081,5,age_band
+social_isolation,sex,0.0074,0.0037,5,age_band
+social_isolation,province,0.007,0.0085,5,age_band
+prior_victimization,sex,0.0023,0.001,5,age_band
+prior_victimization,province,0.0066,0.0086,5,age_band
+reporting_propensity,sex,0.0071,0.0014,5,age_band
+reporting_propensity,province,0.0064,0.0083,5,age_band

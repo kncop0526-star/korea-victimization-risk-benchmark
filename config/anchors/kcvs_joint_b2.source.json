@@ -1,0 +1,28 @@
+{
+  "attributes": [
+    "prior_victimization",
+    "reporting_propensity"
+  ],
+  "survey": "전국범죄피해조사 KCVS 2018 (KICJ) — same respondents",
+  "weight_variable": "wt3",
+  "conditioning": [
+    "age_band",
+    "sex_mf",
+    "education_tier"
+  ],
+  "outcomes": [
+    "nonvictim",
+    "victim_unreported",
+    "victim_reported"
+  ],
+  "n_floor": 30,
+  "n_respondents": 12601,
+  "backoff_cell_counts": {
+    "age+sex+edu": 18,
+    "age+edu": 0,
+    "age+sex": 2,
+    "age": 0,
+    "global": 0
+  },
+  "notes": "Observed nested joint P(PV,RP|cell). RP defined only for victims (c24). Victims with missing c24 dropped. Fixes independent-sampling incoherence (RP assigned to non-victims). No copula; the joint is the empirical conditional."
+}

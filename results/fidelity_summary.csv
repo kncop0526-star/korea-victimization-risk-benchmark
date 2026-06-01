@@ -1,0 +1,7 @@
+﻿attr,n_cells,mean_TVD,max_TVD,weighted_TVD,max_abs_dev,min_cell_n
+financial_vulnerability,5,0.00181,0.0025,0.0017,0.00169,96444
+digital_literacy,10,0.00212,0.00573,0.00133,0.00573,9488
+authority_deference,5,0.00223,0.00393,0.00199,0.00382,96444
+social_isolation,5,0.00147,0.0027,0.0014,0.00216,96444
+prior_victimization,5,0.00053,0.00083,0.00049,0.00083,96444
+reporting_propensity,5,0.00098,0.00124,0.00099,0.00124,96444

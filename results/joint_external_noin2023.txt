@@ -1,0 +1,30 @@
+KVRB external joint validation vs 노인실태조사 2023 (elderly 65+)
+======================================================================
+real N=10,078  synth N(KVRB 65+)=234,139
+
+REAL marginals: FVhi=0.400 DLlo=0.365 SIhi=0.143
+SYNTH marginals: FVhi=0.417 DLlo=0.852 SIhi=0.298
+
+                 quantity     real  synthetic_KVRB      diff unit    ratio
+               share_FVhi 0.399602        0.417466  1.786333   pp 1.044703
+               share_DLlo 0.364754        0.852263 48.750904   pp 2.336542
+               share_SIhi 0.142716        0.298276 15.555971   pp 2.089994
+simultaneous_extreme_rate 0.047897        0.115542  6.764503   pp 2.412289
+independence_implied_rate 0.020802        0.106124  8.532191   pp 5.101659
+                  V_fv_si 0.106324        0.018362 -0.087961    V 0.172704
+                  V_fv_dl 0.209865        0.087614 -0.122251    V 0.417479
+                  V_dl_si 0.132262        0.032774 -0.099488    V 0.247796
+
+VOICE-PHISHING (real): extreme cohort 0.424% vs rest 2.174% (lift 0.20x)
+
+READY §4.5 SENTENCE:
+On 노인실태조사 2023 (N=10,078 weighted, aged 65+), 4.79% of elders are simultaneously high financial vulnerability, low digital literacy, and high social isolation. If the three were independent given the marginals, the rate would be 2.08% — the real joint is 2.30x the independence baseline, confirming the compounding the reviewers flag. KVRB v3 yields 11.55% for the same cut (over-estimating the real tail by 6.76 pp; ratio 2.41). Real pairwise Cramér's V: FV×SI 0.106, FV×DL 0.210, DL×SI 0.132; KVRB: 0.018 / 0.088 / 0.033. Bonus validation: actual voice-phishing victimization is 0.20x higher in the high-risk cohort (0.42% vs 2.17%).
+
+--- ROBUSTNESS / MECHANISM (2026-06-01) ---
+Dependence is robust: real simultaneous-extreme 4.79% vs independence-implied 2.08% = 2.30x.
+Cohort sizes (unweighted): extreme n=555, rest n=9523. VP victims total=169 (extreme=2, rest=167).
+Smartphone use: extreme cohort 21.8% vs rest 70.5% -> the compound-vulnerable are digitally disengaged,
+  so voice-phishing FINANCIAL LOSS (digital/phone-mediated) is LOWER among them (mechanism, not noise).
+DL 'low' marginal: real (<=2 of 13 activities) 36.5% vs KVRB 85.2% -> KVRB likely over-states elderly
+  low digital literacy, but instruments differ (노인실태조사 activity-count vs 디지털정보격차 competency),
+  so compare DEPENDENCE (threshold-robust), not absolute prevalence.

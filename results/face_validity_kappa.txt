@@ -1,0 +1,6 @@
+N = 50
+  rater A: mean=4.540  >=4: 42/50  dist(1..5)=[0, 2, 6, 5, 37]
+  rater B: mean=4.680  >=4: 47/50  dist(1..5)=[0, 2, 1, 8, 39]
+  plausibility: exact=0.780  within-1=0.920  MAE=0.300
+  quadratic-weighted Cohen's kappa = 0.6307
+  consistency-axis agreement = 1.000  (raterA Y=50/50, raterB Y=50/50)

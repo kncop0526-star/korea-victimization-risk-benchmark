@@ -1,0 +1,17 @@
+{
+  "survey": "전국범죄피해조사 KCVS 2018",
+  "conducting_body": "한국형사·법무정책연구원",
+  "access": "KOSSDA 회원공개 (KICJ 작성)",
+  "reference_year": "2018",
+  "weight_variable": "wt3",
+  "conditioning": [
+    "age_band (bh4_02 -> 5-band)"
+  ],
+  "license": "KICJ 공공저작물 제4유형 (출처표시+비영리+변경금지 / NC, ND) + KOSSDA 회원공개. 집계만 공개.",
+  "attribute": "reporting_propensity",
+  "operationalization": "victims only; level=1 if c24==신고했다 else 0; P(level|age_band) weighted",
+  "n_respondents": 439,
+  "anchor_tier": 1,
+  "low_n_flag": true,
+  "notes": "Victim subsample only (~452) -> low N, sparse cells. Disposition applied to all personas in enrichment."
+}

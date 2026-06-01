@@ -1,0 +1,62 @@
+# Abstracted cohort definitions (EXAMPLE / PUBLIC)
+# -------------------------------------------------------------------
+# SAFEGUARD: This file ships ABSTRACTED tiers and PLACEHOLDER values only.
+# Operational cutoff values are kept by the maintainer in a git-ignored
+# config (config/cohorts.local.yaml). Do NOT commit raw targeting thresholds.
+# See ETHICS.md and docs/methodology.md.
+# -------------------------------------------------------------------
+
+# Named tiers are resolved to actual values by cohort_registry.py.
+# In this public example, tiers map to coarse, non-operational ranges.
+defaults:
+  random_state: 42
+  export: [parquet, csv]
+
+tiers:
+  age_tier:
+    youth:    {min: 19, max: 34}      # coarse, illustrative
+    midlife:  {min: 40, max: 69}
+    senior:   {min: 70, max: 99}
+    young_adult: {min: 19, max: 24}
+  isolation:
+    high: {family_type_contains: ["혼자 거주"]}
+  education_tier:
+    lower: {education_level_in: ["초등학교 졸업", "중학교 졸업"]}  # placeholder set
+
+modules:
+  module_01:                 # voice phishing (elderly)
+    description: "Elderly voice-phishing exposure cohort"
+    predicates:
+      - age_tier: senior
+      - isolation: high
+      - education_tier: lower
+    validate_on: [age_band, province, sex]
+
+  module_02:                 # jeonse fraud (youth)
+    description: "Young metropolitan tenant cohort"
+    predicates:
+      - age_tier: youth
+      - housing_type_in: ["다세대주택", "연립주택"]   # placeholder
+      - province_in: ["서울특별시", "경기도", "인천광역시"]
+    validate_on: [age_band, province, housing_type]
+
+  module_03:                 # romance / investment scam
+    description: "Mid-life relational-vulnerability cohort"
+    predicates:
+      - age_tier: midlife
+      - marital_status_in: ["이혼", "사별"]            # placeholder
+    validate_on: [age_band, sex, marital_status]
+
+  module_04:                 # digital sex crime (ADULT ONLY)
+    description: "Young-adult digital-safety cohort (19+ only; NO minors in data)"
+    predicates:
+      - age_tier: young_adult
+    keep_coarse: true        # intentionally minimal — do not narrow further
+    validate_on: [age_band, sex, province]
+
+  module_05_guardian:        # school violence — guardian proxy
+    description: "Guardian-of-school-age-child stakeholder cohort (adult proxy)"
+    predicates:
+      - family_type_contains: ["미혼자녀"]
+      - age_tier: midlife
+    validate_on: [age_band, family_type, province]

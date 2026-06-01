@@ -1,0 +1,20 @@
+KVRB backbone dependency — pinned version (guard against upstream drift)
+=======================================================================
+Backbone dataset : NVIDIA Nemotron-Personas-Korea
+Source           : https://huggingface.co/datasets/nvidia/Nemotron-Personas-Korea
+License          : CC-BY-4.0
+Pinned revision  : d0a9272116a2ebf139b964ca72b8b8f604616689   (commit sha)
+Released         : 2026-04-20 (created); last modified 2026-04-23
+Shape used       : 1,000,000 rows; 9 parquet parts (data/train-0000{0..8}-of-00009.parquet)
+Columns used     : uuid, sex, age, marital_status, military_status, family_type, housing_type,
+                   education_level, bachelors_field, occupation, district, province, country
+
+Reproduce the EXACT backbone (Python):
+  from huggingface_hub import snapshot_download
+  snapshot_download(repo_id="nvidia/Nemotron-Personas-Korea", repo_type="dataset",
+                    revision="d0a9272116a2ebf139b964ca72b8b8f604616689")
+  # or: datasets.load_dataset("nvidia/Nemotron-Personas-Korea",
+  #          revision="d0a9272116a2ebf139b964ca72b8b8f604616689")
+
+KVRB does NOT redistribute the backbone; reusers fetch this exact revision and run the KVRB code.
+If NVIDIA updates the dataset, this pinned sha still resolves to the version KVRB was built on.

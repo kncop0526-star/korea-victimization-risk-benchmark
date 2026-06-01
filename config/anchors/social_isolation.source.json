@@ -1,0 +1,16 @@
+{
+  "attribute": "social_isolation",
+  "operationalization_version": "structural (v2; replaces OTHREL subjective-loneliness v1)",
+  "survey": "한국종합사회조사 KGSS (2003-2021 cumulative)",
+  "conducting_body": "성균관대 서베이리서치센터",
+  "access": "on-hand (KOSSDA-distributed)",
+  "weight_variable": "FINALWT",
+  "operationalization": "structural isolation = mean of [personal support deficit (SICK/BORROW/DOWN helper=='없음' fraction), neighbor deficit ((5-NGHASK)/4)]; weighted quintile 1..5 (5=most isolated)",
+  "conditioning": [
+    "age_band (AGE -> 5-band)"
+  ],
+  "n_respondents": 2686,
+  "anchor_tier": 2,
+  "low_n_flag": true,
+  "notes": "Structural (support-availability) measure, not subjective loneliness. Single-wave support battery -> low N. 75+ cell may be sparse."
+}

@@ -1,0 +1,49 @@
+KVRB FV B1 extension — financial_vulnerability to age x sex x education (2026-05-31)
+Builder: src/build_anchor_fv_b1.py -> config/anchors/financial_vulnerability_b1.csv (N=18,314 households,
+2024 가구마스터). Resolves the deferred 교육 통합코드 mapping: G4=대학이상 -> higher, G1-G3 -> lower.
+enrich now points FV (in --b1/--b2) to the age x sex x edu anchor; all 20 cells at full granularity.
+
+EFFECT ON F6 (BASE age-only -> B1+B2 with FV extended), within-age |r|
+  FV-DL  0.003 -> 0.095  (+0.092)   FV & DL share education (low edu: high FV, low DL)
+  FV-AD  0.001 -> 0.040  (+0.039)
+  FV-SI  0.002 -> 0.012  (+0.010)
+  FV-PV  0.001 -> 0.010  (+0.009)
+  max within-age |r| across the 5 non-RP attributes: 0.003 -> 0.095.
+  FV is now correlated with the other attributes through shared demographic causes, not independent.
+
+EXTREME-COMBO (modest, as expected)
+  FV5+DL5 (incoherent) 4.81% -> 4.72% (-0.08pp); FV5+SI5 2.72 -> 3.01; FV5+DL5+SI5 0.64 -> 0.62.
+  Why only modest: B1 induces BETWEEN-cell correlation through shared conditioners but does NOT impose
+  a within-cell joint (no copula) — within a cell FV and DL are still drawn independently, which floors
+  the tail co-occurrence. Full suppression of FV5+DL5 would require a cross-block copula we deliberately
+  avoid (FV-DL is not an observable joint; imposing one would fabricate dependence). Honest ceiling.
+
+FIDELITY & MARGINAL
+  Per-cell F2 fidelity preserved (max |anchor-synthetic| 0.0161, sampling noise on the 20-cell anchor;
+  F2 validates P(FV|cell), which holds by construction).
+  FV national marginal shifts (level 5: 23.2% -> 26.1%, level 1: 17.8% -> 14.8%). This is NOT an F2
+  violation: the marginal is emergent from applying survey conditionals to the individual backbone,
+  whose age x sex x edu mix differs from household HEADS. CAVEAT (documented in .source.json): FV is a
+  household attribute keyed to the head; head age/sex/education are applied to the persona under the same
+  head-as-proxy assumption the age-only anchor already used. Head sex skews male, so female cells reflect
+  female-headed households. Reusers should read FV as head-conditioned.
+
+ARTIFACTS
+  config/anchors/financial_vulnerability_b1.csv (+ .source.json) ; results/F6_joint_b1b2.png
+NEXT: C1 out-of-sample external validity check.
+
+============================================================
+CORRECTION (2026-05-31, same session): FV conditioned on age x EDUCATION only (sex dropped)
+============================================================
+The first FV B1 pass conditioned on age x sex x education using HOUSEHOLD-HEAD demographics. The
+stereotype audit on the resulting v3 flagged financial_vulnerability × sex residual Cramér V = 0.245:
+because household heads are 71% male, head-sex conditioning manufactured a spurious FV×sex association
+(head sex does not proxy the persona's sex). FIX: FV now conditions on age × education only and is
+SEX-INVARIANT (same distribution written for both sexes). Result:
+  - FV×sex stereotype residual 0.245 -> 0.033 (artifact removed).
+  - FV-DL within-age |r| retained at 0.093 (was 0.095) — the FV-DL signal came from EDUCATION, not sex.
+  - FV mean by sex now ~equal (F 3.20 / M 3.13).
+AD/SI/PV/RP keep age×sex×edu: their sex associations are REAL individual-level KGSS/KCVS relationships
+(max AD×sex 0.145), surfaced by the audit for human review, not artifacts. This is the "measured vs
+artifact" distinction in action — the audit correctly separated the FV head-proxy artifact from the
+genuine KGSS/KCVS sex relationships.

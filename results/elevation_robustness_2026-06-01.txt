@@ -1,0 +1,59 @@
+KVRB external-validation findings — robustness for contribution elevation (2026-06-01)
+======================================================================================
+
+CONTRIBUTION 1+2 — conditional-independence error, ground-truthed (노인실태조사 2023, 65+):
+  Dependence ratio (real simultaneous-extreme / independence-implied) = 2.36  (95% CI 2.20–2.55, 400 boot)
+  KVRB v3 ratio = 1.09 (near conditional-independent).
+  Real pairwise Cramér's V: FV×DL 0.210, DL×SI 0.132, FV×SI 0.106 ; KVRB 0.088/0.033/0.018 (2–6x under).
+  Absolute marginals confounded by instrument (노인 activity-count vs 디지털정보격차 competency):
+    low-DL share real 36.5% vs KVRB 85.2% -> compare DEPENDENCE not prevalence; elderly DL/SI marginal
+    recalibration = documented limitation.
+
+CONTRIBUTION 3 — voice-phishing financial LOSS rises with digital engagement (powered):
+  By smartphone use: users 1.75% (n=6432, 142 victims) vs non-users 0.34% (n=3646, 27). Crude OR=3.03.
+  Gradient by # digital activities: 0:0.10% / 1-2:0.24% / 3-5:0.45% / 6-9:0.81% / 10-13:0.49% (monotone to 6-9).
+  Income×digital interaction (loss rises with BOTH):
+    low inc x digital 0.79% | low inc x non-digital 0.98%
+    mid inc x digital 1.86% | mid inc x non-digital 0.83%
+    high inc x digital 3.96% (108 victims, n=2995) | high inc x non-digital 1.53%
+  => the voice-phishing financial-LOSS victim is the digitally-engaged, higher-income elder, NOT the
+     poor/isolated/digitally-excluded "vulnerable" stereotype. Exposure×capacity dominates susceptibility.
+  Total VP-loss victims N=169 / 10,078 (1.7%). Mechanism: smartphone use 22% (extreme-vuln cohort) vs 71%.
+
+Literature calibration:
+  - CI assumption is the known core limitation of statistical matching/data fusion (p(Y,Z)=p(Y|X)p(Z|X)p(X));
+    our contribution = empirical ground-truthed quantification + external same-respondent joint-validation
+    protocol for released synthetic populations (rarely validated beyond marginals).
+  - Elder-fraud literature emphasizes low digital literacy / isolation / cognition -> higher SUSCEPTIBILITY;
+    population-level realized-LOSS by digital engagement is under-studied. Our inversion distinguishes
+    exposure/capacity from susceptibility (routine-activity reading).
+
+--- CORRECTED within-cell VP-loss gradient (2026-06-01, fixes joint-share bug) ---
+VP-loss rate WITHIN digital-activity bin (weighted): 0:0.63% 1-2:1.18% 3-5:1.86% 6-9:2.92% 10-13:4.30%
+  => MONOTONE rising with operational digital literacy (exposure/capacity channel). The earlier
+     "drop at 10-13" was a joint-share artifact; corrected, it is monotone.
+Online banking capable 2.65% vs not 1.95% (capacity channel, same direction).
+Weak NON-robust hint of high-end turn-down only at activity=13 (n=146, 3 victims) — noise, not an inverted-U.
+
+TWO-CHANNEL THEORY OF AI-ERA FRAUD LITERACY (Daniel, 2026-06-01):
+  'Digital literacy' conflates two opposing channels:
+   Axis 1 = operational/medium literacy (smartphone, apps, transactions) -> EXPOSURE & capacity -> victimization UP  [CONFIRMED here, monotone]
+   Axis 2 = AI-threat literacy (deepfake/deepvoice/AI-deception awareness) -> DETECTION -> victimization DOWN       [UNMEASURED: absent in 노인실태조사]
+  Net risk = inverted-U / saddle, peaking at "operationally active but AI-naive" elder.
+  - Resolves the conventional("low literacy = vulnerable") vs empirical("engagement -> loss") contradiction.
+  - Explains Paper G's simulated non-monotonicity (DL Medium 15.75 > Low 12.75 trust).
+  - Measurement gap = contribution: no existing survey measures AI-threat literacy -> candidate next KVRB
+    attribute / new instrument (on-brand: KVRB adds attributes surveys lack; 치안AI deepfake era).
+
+--- 디지털정보격차 실태조사 2025 — can it validate Axis 2? NO (checked 2026-06-01) ---
+The survey's AI module measures: AI service EXPERIENCE rate, AI USE competency (이용 역량), reasons for
+non-use, and AI-impact PERCEPTION (all positive-benefit items: "더 편리"/"기회" 68.1%/57.7%).
+= AI adoption/use/optimism = an EXTENSION OF AXIS 1, NOT Axis-2 threat detection.
+Zero items on deepfake/식별/진위/판별/악용/역기능/사기/피해 (grep: all 0). No victimization outcome.
+Report (aggregate), not microdata; different survey from 노인실태조사 (no same-respondent link).
+=> Cannot test Axis 2. BUT sharpens the measurement-gap contribution: even Korea's flagship digital-divide
+   survey, with a 2025 AI module, measures AI USE not AI-THREAT detection -> Axis 2 unmeasured in national
+   instruments is now an established fact, not a conjecture. Key point: AI-USE literacy ≠ AI-THREAT literacy.
+Constructive path to measure Axis 2: new scale (detect AI-synthetic voice / deepfake family / awareness of
+   voice-cloning scams) -> candidate next KVRB attribute (no anchor -> Tier-3 or new survey) OR field it on
+   the 모두의 경찰관 소통자문단 N=110 panel (already referenced by Paper G) to directly test the inverted-U.

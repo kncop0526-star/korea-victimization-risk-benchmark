@@ -1,0 +1,37 @@
+{
+  "title": "Korea Victimization-Risk Persona Benchmark (KVRB): survey-anchored synthetic personas with crime-prevention behavioral attributes",
+  "upload_type": "dataset",
+  "description": "<p>A survey-anchored synthetic-persona dataset and reproducibility package that augments NVIDIA Nemotron-Personas-Korea with six crime-prevention behavioral attributes (financial vulnerability, digital literacy, authority deference, social isolation, prior victimization, reporting propensity). Each attribute is sampled from a weighted Korean national-survey conditional, so attribute distributions match the source surveys by construction. The Route-B build adds shared-demographic conditioning (age x sex x education) and one observed within-survey joint (victimization x reporting, from KCVS), with all inter-attribute structure labeled as measured or assumed.</p><p><strong>Contents:</strong> construction and validation code (src/), aggregate survey anchor tables with provenance (config/anchors/), technical-validation outputs and figures (results/), methodology docs, and the data-descriptor manuscript draft. <strong>Not included:</strong> the 1,000,000-row enriched persona file (reproducible from the code + anchors) and the raw survey microdata (held under the source agencies' terms).</p><p><strong>Synthetic only:</strong> no real victims, suspects, or PII. See ETHICS.md for the dual-use statement.</p>",
+  "access_right": "open",
+  "license": "cc-by-4.0",
+  "keywords": [
+    "synthetic personas",
+    "crime prevention",
+    "victimization risk",
+    "survey data fusion",
+    "agent-based modeling",
+    "police administration",
+    "Korea",
+    "Nemotron"
+  ],
+  "creators": [
+    {
+      "name": "Lee, Chihwa",
+      "affiliation": "Korean National Police Agency, AI Policy Division; KAIST",
+      "orcid": "0009-0009-6959-1797"
+    }
+  ],
+  "related_identifiers": [
+    {
+      "relation": "isDerivedFrom",
+      "identifier": "https://huggingface.co/datasets/nvidia/Nemotron-Personas-Korea",
+      "scheme": "url"
+    },
+    {
+      "relation": "isSupplementTo",
+      "identifier": "https://github.com/kncop0526-star/korea-victimization-risk-benchmark",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Derivative of NVIDIA Nemotron-Personas-Korea (CC-BY-4.0). Behavioral anchors are aggregate distributions derived from Korean national surveys (KGSS, KCVS, 가계금융복지조사, 디지털정보격차 실태조사); only aggregate tables are redistributed, no microdata."
+}

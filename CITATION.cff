@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: "If you use this benchmark, please cite both this repository and the upstream NVIDIA dataset."
+title: "Korea Victimization-Risk Persona Benchmark (KVRB)"
+abstract: >-
+  A survey-anchored synthetic-persona dataset and tooling layer that augments NVIDIA
+  Nemotron-Personas-Korea with crime-prevention behavioral attributes (financial vulnerability,
+  digital literacy, authority deference, social isolation, prior victimization, reporting
+  propensity), each anchored to Korean national surveys and validated by construction. Route-B
+  adds shared-demographic conditioning and one observed within-survey joint (victimization x
+  reporting). For crime-prevention research, agent-based simulation, and police-officer training.
+  Contains synthetic personas only; no real victims, suspects, or PII.
+type: software
+authors:
+  - given-names: "Chihwa"
+    family-names: "Lee"
+    affiliation: "Korean National Police Agency, AI Policy Division; KAIST"
+    orcid: "https://orcid.org/0009-0009-6959-1797"
+license: MIT
+license-url: "https://github.com/kncop0526-star/korea-victimization-risk-benchmark/blob/main/LICENSE"
+repository-code: "https://github.com/kncop0526-star/korea-victimization-risk-benchmark"
+keywords:
+  - synthetic personas
+  - crime prevention
+  - victimization risk
+  - survey data fusion
+  - agent-based modeling
+  - police administration
+  - Korea
+version: 0.3.0
+date-released: "2026-05-31"
+references:
+  - type: dataset
+    title: "Nemotron-Personas-Korea"
+    authors:
+      - name: "NVIDIA"
+    year: 2025
+    publisher:
+      name: "Hugging Face"
+    url: "https://huggingface.co/datasets/nvidia/Nemotron-Personas-Korea"
+    license: CC-BY-4.0

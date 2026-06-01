@@ -1,0 +1,28 @@
+{
+  "attribute": "reporting_propensity",
+  "survey": "전국범죄피해조사 KCVS 2018 (KICJ, victims only)",
+  "weight_variable": "wt3",
+  "anchor_tier": 4,
+  "conditioning": [
+    "age_band",
+    "sex_mf",
+    "education_tier"
+  ],
+  "backoff_order": [
+    "age+sex+edu",
+    "age+edu",
+    "age+sex",
+    "age",
+    "global"
+  ],
+  "n_floor": 30,
+  "n_respondents": 439,
+  "backoff_cell_counts": {
+    "age+sex+edu": 6,
+    "age+edu": 4,
+    "age+sex": 5,
+    "age": 1,
+    "global": 4
+  },
+  "notes": "B1 richer conditioning. Dense over 5 age x 2 sex x 2 edu = 20 cells; each cell uses the most specific demographic subset with n>=floor, else backs off. Probabilities are weighted P(level|cell). No correlation assumed; cross-attribute structure arises through shared demographic conditioning (common causes)."
+}

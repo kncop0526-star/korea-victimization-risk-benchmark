@@ -1,0 +1,30 @@
+KVRB v3 dataset (Route-B: B1 + B2) — manifest (2026-05-31)
+Generation: src/enrich_stage1.py --b2  (implies B1)  on the 1M Nemotron backbone.
+Committed: data/processed/enriched_1M_v3_parts/  (9 parquet parts, 1,000,000 rows, footer-verified).
+NOTE: data/processed/enriched_1M_v2.parquet (single file) is CORRUPT (missing PAR1 footer); use the
+v2 parts dir for the base/v2 comparison. v3 is git-ignored data like v2 but reproducible from the
+committed anchors + scripts.
+
+WHAT v3 CONTAINS (vs v2 independent-sampling)
+  B1 richer conditioning: AD, SI (KGSS, age×sex×edu), PV/RP (KCVS, via B2 joint), FV (age×edu only).
+  B2 observed joint: PV×RP drawn from the KCVS nested 3-outcome joint; RP = -1 (N/A) for non-victims.
+  FV correction: conditioned on age×education ONLY (sex dropped) — see stereotype finding below.
+
+VALIDATION ON v3
+  By-construction fidelity (max |anchor-synthetic|): FV .0116, DL .0051, AD .0163, SI .0109;
+    PV joint victim-rate .0367, RP|victim .2294.
+  F6 within-age |r|: 0.003 (v2) -> 0.093 (v3); FV-DL 0.003 -> 0.093 (via shared education).
+  F6' PV×RP joint fidelity: per-cell TVD <= 0.0019; RP coherent (0 non-victim assignments).
+  F5 stereotype (max residual Cramér V): 0.012 (v2) -> 0.145 (v3).
+    Driver after correction: authority_deference × sex = 0.145 — a REAL KGSS individual-level
+    relationship (deference differs by sex in the survey), surfaced for human review, NOT fabricated.
+    SI×sex 0.084, PV/RP×sex ~0.04 likewise reflect measured KCVS/KGSS relationships.
+    *** FV×sex was 0.245 when FV conditioned on household-HEAD sex (71% male) — a spurious artifact
+    (head sex does not proxy persona sex). Fixed by making FV sex-invariant (age×edu): FV×sex -> 0.033. ***
+  C1 external validity: digital-literacy age gradient predicts internet-use-rate gradient (ρ=0.975).
+
+FIGURES (v3): results/F6_joint_b1b2.png, F6prime_pvrp_joint_b2.png, C1_external_validity.png,
+              F4_elderly_phishing_cohort_v3.png, F5_stereotype_audit_v3.png.
+F2 v3 DONE: validate_fidelity.py --v3 (anchor-set aware). Weighted per-cell TVD: FV .0031, DL .0014,
+   AD .0034, SI .0023, PVxRP joint .0007 (all by-construction). results/F2_distributional_fidelity_v3.png,
+   fidelity_summary_v3.csv.

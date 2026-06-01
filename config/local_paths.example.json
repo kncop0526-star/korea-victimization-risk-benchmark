@@ -1,0 +1,4 @@
+{
+  "_comment": "Copy to local_paths.json (git-ignored) OR set env var KVRB_DATA_ROOT. Points to the shared raw survey-data folder (NOT committed). Same data is also used by the Paper F track.",
+  "data_root": "C:/Users/<you>/.../06_Paper_F_SSCI_BDS/04_data"
+}

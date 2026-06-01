@@ -1,0 +1,46 @@
+# --- Raw / large data: NEVER commit the 1M-row dataset or derived parquet ---
+data/raw/
+data/processed/
+*.parquet
+*.csv
+!config/*.csv
+
+# --- Operational (non-public) cohort config: keep sensitive thresholds local ---
+config/cohorts.local.yaml
+config/*.private.yaml
+
+# --- Python ---
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.pytest_cache/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Local data-root config (points to shared raw survey data; not for public repo)
+config/local_paths.json
+
+# --- Technical-validation outputs (aggregate only, public-safe): DO track ---
+!results/
+!results/*.csv
+!results/*.png
+
+# Local archive of superseded v1 data / stub previews (not for public repo)
+_archive/
+
+# Private human re-read answer key (never publish)
+results/human_reread_key.csv
+results/human_reread_sheet*.xlsx
+results/face_validity_rater_*.xlsx
+# Logs
+*.log
+
+# --- Internal working notes / review records / strategy / unpublished-paper links: NEVER publish ---
+manuscript/_*
+manuscript/EXTERNAL_*

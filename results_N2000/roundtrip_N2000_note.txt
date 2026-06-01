@@ -1,0 +1,20 @@
+KVRB round-trip scaled to stratified N=2000 (2026-05-31)
+Generator+extractor: gemini-2.5-flash. Input: roundtrip_input_stratified_2000.csv (200 per age x sex
+cell). enrich_stage2_3.py hardened (retry+backoff+resume, ONE combined extraction call). 2000 written,
+0 errors. Aggregate: validate_roundtrip.py -> results_N2000/roundtrip_summary.csv.
+
+attr                      exact  within1  MAE     qwk    | N=200 pilot qwk
+social_isolation          0.734  0.966    0.329   0.885  | 0.846  (up)
+financial_vulnerability   0.581  0.962    0.462   0.879  | 0.847
+authority_deference       0.600  0.966    0.450   0.875  | 0.881
+digital_literacy          0.615  0.917    0.588   0.730  | 0.920  (DOWN — now weakest)
+
+READING: weighted kappa 0.73-0.89 (substantial to almost-perfect), within-1 0.92-0.97 across all four.
+The stratified N=2000 (0.2% probe, spans the cell range) is the headline; it replaces the N=200 pilot.
+Digital literacy fell to 0.730 (was best at N=200): the combined single-call extraction is slightly
+noisier for DL, and the stratified sample loads more sparse elderly/low-edu cells where DL cues are read
+one step off. Honest, reported as-is. Cross-model (gpt-4o, n=120 on the 200-narrative pass) holds at
+qwk 0.77-0.89, so the encoded level survives a model boundary.
+CAVEAT: synthetic round-trip throughout (no human re-read) — measures faithful encoding, not human reading.
+manuscript §4.2 + Figures F3 updated to N=2000. Files: results_N2000/{roundtrip_summary.csv,F3_*.png},
+data/processed/enriched_stage23_N2000.jsonl.

@@ -1,0 +1,19 @@
+KVRB cross-model round-trip — reviewer C2/C3 (2026-05-31)
+Generator: gemini-2.5-flash (Stage-2 narratives, N=200). Independent extractor: OpenAI
+gpt-4o-2024-11-20 re-read each Likert level from the SAME Gemini narratives (no regeneration),
+so agreement is a BETWEEN-model reliability coefficient, not within-model self-consistency.
+n = 120 of 200 (parse-rate exclusion). actual_model not persisted in xmodel records; pinned via CLI.
+
+attr                      exact  within1  MAE    qwk(cross) | qwk(within, N=200)
+authority_deference       0.633  0.992    0.375  0.882      | 0.881   (≈ unchanged)
+digital_literacy          0.617  1.000    0.383  0.892      | 0.920   (-0.028)
+financial_vulnerability   0.500  0.967    0.533  0.839      | 0.847   (-0.009)
+social_isolation          0.408  0.892    0.700  0.774      | 0.846   (-0.071, hardest construct)
+
+READING: cross-model qwk 0.77-0.89 (substantial→almost-perfect), within-1 0.89-1.00. Coefficients sit
+just below the within-model figures. The encoded attribute therefore survives the model boundary — the
+round-trip consistency is not an artifact of one model agreeing with itself (answers C2/C3). Social
+isolation (structural-support construct) is the weakest to recover, consistent with it being the
+subtlest to read off a narrative.
+Files: results_xmodel/roundtrip_summary.csv, results_xmodel/F3_roundtrip_consistency.png
+       data/processed/enriched_stage23_xmodel.jsonl (120 cross-model extractions)

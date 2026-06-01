@@ -1,0 +1,38 @@
+KVRB Route-B step B1 — richer demographic conditioning: results (2026-05-31)
+Re-estimated the 4 survey-direct anchors on age_band x sex x education_tier (was age_band alone)
+with hierarchical N-floor backoff (FLOOR=30). FV and DL unchanged (need MDIS/NIA re-extract).
+Builder: src/build_anchor_b1.py -> config/anchors/*_b1.csv ; enrich: src/enrich_stage1.py --b1
+Regenerated 1M personas; F6 inter-attribute audit recomputed.
+
+FIDELITY (by-construction, max |anchor - synthetic|): FV .0012 DL .0051 AD .0163 SI .0109
+PV .0022 RP .0047  (all small -> faithful reproduction).
+
+F6 WITHIN-AGE-BAND |r|  (the headline: was ~0 because conditioning was age-only)
+  max within-age |r|:  BASE 0.003  ->  B1 0.038
+  pairs that moved (Δ within-age |r|), i.e. pairs that now share sex/edu conditioners:
+    DL-AD   0.002 -> 0.038  (+0.036)   DL & AD both load on education
+    DL-RP   0.002 -> 0.018  (+0.016)
+    DL-SI   0.002 -> 0.013  (+0.011)
+    AD-SI   0.001 -> 0.008  (+0.007)   within-KGSS pair, via shared sex x edu
+    DL-PV   0.001 -> 0.008  (+0.007)
+    AD-RP   0.002 -> 0.006  (+0.004)
+    AD-PV   0.001 -> 0.005  (+0.004)
+  Correlation rose ONLY where attributes share a conditioner (mechanism confirmed:
+  common-cause demographic conditioning, no fabricated dependence).
+
+HONEST LIMITS (report as-is)
+  - Magnitudes are modest (max 0.038): shared demographics carry only so much covariance.
+    It is REAL (data-grounded), not assumed — bounded by what age x sex x edu explains.
+  - FV pairs stayed ~0.001 because FV is still age-only (not yet B1). Extending FV needs the
+    가금복 가구마스터 re-extract + the deferred 교육 통합코드(G1-G4) mapping.
+  - Extreme-combo rate barely changed (FV5+DL5 4.81% -> 4.78%) for the same reason — dropping it
+    requires FV to gain the edu conditioner. Once FV is B1, FV-DL incoherence should fall.
+  - Within-block observed covariance (AD-SI, PV-RP) beyond demographics needs B2 joint sampling;
+    per B0, AD-SI joint is NOT observable (disjoint waves) so AD-SI stays at the B1+B3 level;
+    only PV-RP supports B2.
+
+ARTIFACTS
+  results/F6_joint_independence_b1.png   (B1 version of the F6 figure)
+  results/joint_audit_b1.csv            (per-pair marginal & within-age |r|, B1)
+  config/anchors/{authority_deference,social_isolation,prior_victimization,reporting_propensity}_b1.csv
+NEXT: extend FV (+DL sex) to B1 -> re-run F6 (expect extreme-combo drop); B2 PV-RP joint; cross-model round-trip.

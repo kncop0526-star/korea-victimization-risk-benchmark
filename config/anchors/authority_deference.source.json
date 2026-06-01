@@ -1,0 +1,16 @@
+{
+  "attribute": "authority_deference",
+  "survey": "한국종합사회조사 KGSS (2003-2021 cumulative)",
+  "conducting_body": "성균관대 서베이리서치센터 (KGSS)",
+  "access": "on-hand (KOSSDA-distributed cumulative file)",
+  "reference_year": "2003-2021 (item-specific waves)",
+  "weight_variable": "FINALWT",
+  "operationalization": "scale = mean of valid(1-5) items (>=3 answered); weighted quintile 1..5. AUTHORT2/4/5/6/7 (권위주의·법질서·질서 순응; higher=more deferent)",
+  "conditioning": [
+    "age_band (AGE -> 5-band)"
+  ],
+  "n_respondents": 927,
+  "anchor_tier": 2,
+  "low_n_flag": true,
+  "notes": "Item battery present only in specific KGSS waves -> low effective N; indicative anchor. Education/region conditioning omitted (cell-size). 75+ cell may be sparse."
+}

@@ -1,0 +1,17 @@
+{
+  "attribute": "digital_literacy",
+  "survey": "디지털정보격차 실태조사 (Digital Divide Survey)",
+  "conducting_body": "과학기술정보통신부·한국지능정보사회진흥원(NIA)",
+  "access": "공공데이터포털 dataset 15038422 (일반국민 micro file)",
+  "reference_year": "2024",
+  "weight_variable": "WT",
+  "operationalization": "competency = mean(Q8_1..Q8_9 활용역량, 4pt Likert); digital_literacy = weighted quintile (1=low,5=high)",
+  "conditioning": [
+    "age_band (ADQ1 raw age -> 5-band)",
+    "education_tier (ADQ4: 1-3=lower,4=higher)"
+  ],
+  "n_respondents": 7000,
+  "anchor_tier": 1,
+  "license": "공공데이터포털 제2유형 (출처표시 + 상업적 이용금지 / NON-COMMERCIAL). Aggregate table only; NC source flagged.",
+  "notes": "활용역량 sub-index incl. online payment/kiosk/authentication (phishing-relevant). ADQ1 is raw age, binned to Nemotron's native 5-band scheme."
+}
