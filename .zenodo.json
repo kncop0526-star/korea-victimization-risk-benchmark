@@ -33,5 +33,5 @@
       "scheme": "url"
     }
   ],
-  "notes": "Derivative of NVIDIA Nemotron-Personas-Korea (CC-BY-4.0). Behavioral anchors are aggregate distributions derived from Korean national surveys (KGSS, KCVS, 가계금융복지조사, 디지털정보격차 실태조사); only aggregate tables are redistributed, no microdata."
+  "notes": "Derivative of NVIDIA Nemotron-Personas-Korea (CC-BY-4.0). Behavioral anchors are aggregate distributions derived from Korean national surveys (KGSS, KCVS, 가계금융복지조사, 디지털정보격차 실태조사, 노인실태조사 2023); only aggregate tables are redistributed, no microdata."
 }

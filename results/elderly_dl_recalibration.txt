@@ -1,0 +1,2 @@
+Elderly DL recalibration: anchor bands 60-74/75+ rebuilt from 노인실태조사 2023 (65-74->60-74 proxy, 75+) x education_tier; v4 DL resampled from new anchor.
+[v4] elderly(65+) DL low(<=2) = 0.345 (n=234139); real target 0.365

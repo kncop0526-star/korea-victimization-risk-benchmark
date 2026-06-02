@@ -1,0 +1,9 @@
+Residual magnitude match — synthetic vs source-survey Cramér's V (reviewer M2)
+======================================================================
+               attr  synthetic_residual_V  source_survey_V   source_CI95    n                           verdict
+authority_deference                 0.145            0.077 [0.042,0.164]  974     reproduces (within source CI)
+   social_isolation                 0.084            0.025 [0.011,0.072] 2708 AMPLIFIES (synthetic > source CI)
+
+READY §4.3 SENTENCE (fill from row):
+  authority_deference×sex: synthetic V 0.145 vs source survey V 0.077 [0.042,0.164] -> reproduces (within source CI).
+  social_isolation×sex: synthetic V 0.084 vs source survey V 0.025 [0.011,0.072] -> AMPLIFIES (synthetic > source CI).

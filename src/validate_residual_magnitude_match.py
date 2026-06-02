@@ -22,7 +22,7 @@ import numpy as np, pandas as pd
 AGE_BINS=[19,30,45,60,75,200]; AGE_LABELS=["19-29","30-44","45-59","60-74","75+"]
 AD_ITEMS=["AUTHORT2","AUTHORT4","AUTHORT5","AUTHORT6","AUTHORT7"]
 # set to match the RELEASED social_isolation anchor (structural support battery). Edit if names differ.
-SI_ITEMS=["SICK1","BORROW1","DOWN1"]   # + optionally NGHASK; confirm against build_anchor_social_isolation_structural.py
+SI_ITEMS=["SICK1","BORROW1","DOWN1","NGHASK"]   # structural SI: support deficit + neighbor deficit (matches released anchor)
 WEIGHT="FINALWT"; SEX="SEX"; AGE="AGE"
 
 def cramers_v(a,b,w):
@@ -45,6 +45,30 @@ def to_level(df, items):
     edges=[np.interp(q,cw,scale[order]) for q in (0.2,0.4,0.6,0.8)]
     lvl=np.array([sum(v>e for e in edges)+1 for v in scale])
     return d, lvl, w
+
+def structural_si_level(df):
+    """Mirror build_anchor_social_isolation_structural: SI = weighted quintile of
+    mean[personal-support deficit (SICK1/BORROW1/DOWN1 helper==0 '없음' fraction), neighbor deficit (5-NGHASK)/4]."""
+    for c in ["SICK1","BORROW1","DOWN1","NGHASK",WEIGHT,SEX,AGE]:
+        if c in df.columns: df[c]=pd.to_numeric(df[c], errors="coerce")
+    dom=df[["SICK1","BORROW1","DOWN1"]].where(df[["SICK1","BORROW1","DOWN1"]]>=0)
+    pdv=dom.notna().sum(axis=1)
+    personal=(dom==0).sum(axis=1)/pdv.replace(0,np.nan)   # frac of VALID needs with no helper; NaN if none valid
+    ng=df["NGHASK"].where((df["NGHASK"]>=1)&(df["NGHASK"]<=5))
+    neighbor=(5-ng)/4.0
+    score=pd.concat([personal,neighbor],axis=1).mean(axis=1,skipna=True)
+    d=df[score.notna() & df[WEIGHT].notna() & (df[WEIGHT]>0)].copy()
+    s=score.loc[d.index].values; w=d[WEIGHT].values
+    order=np.argsort(s); cw=np.cumsum(w[order])/w.sum()
+    edges=[np.interp(q,cw,s[order]) for q in (0.2,0.4,0.6,0.8)]
+    lvl=np.array([sum(v>e for e in edges)+1 for v in s])
+    sex=d[SEX].values
+    V=cramers_v(lvl,sex,w)
+    rng=np.random.default_rng(42); idx=np.arange(len(lvl)); boots=[]
+    for _ in range(400):
+        b=rng.choice(idx,len(idx),replace=True); boots.append(cramers_v(lvl[b],sex[b],w[b]))
+    return V,(np.nanpercentile(boots,2.5),np.nanpercentile(boots,97.5)),len(lvl)
+
 
 def source_V(df, items, label):
     have=[c for c in items if c in df.columns]
@@ -96,7 +120,10 @@ def main():
         if not a.kgss: raise SystemExit("[fatal] --kgss path required (or --mock)")
         df=pd.read_csv(a.kgss)
     for attr,items in (("authority_deference",AD_ITEMS),("social_isolation",SI_ITEMS)):
-        V,(lo,hi),nn=source_V(df.copy(), items, attr)
+        if attr=="social_isolation" and all(c in df.columns for c in ["SICK1","BORROW1","DOWN1","NGHASK"]):
+            V,(lo,hi),nn=structural_si_level(df.copy())
+        else:
+            V,(lo,hi),nn=source_V(df.copy(), items, attr)
         syn=synth_residual(attr)
         rows.append({"attr":attr,"synthetic_residual_V":round(syn,3) if syn==syn else syn,
                      "source_survey_V":round(V,3) if V==V else V,

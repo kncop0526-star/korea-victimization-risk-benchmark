@@ -48,5 +48,8 @@ manuscript/EXTERNAL_*
 !config/anchors/*.csv
 !results_N2000/*.csv
 !results_xmodel/*.csv
-# re-assert: the private human re-read key stays ignored regardless of the rescues above
+!results_v4/*.csv
+!results_xmodel_N2000/*.csv
+# re-assert: the private human re-read key + FILLED rater answers stay ignored regardless of the rescues above
 results/human_reread_key.csv
+results/*_FILLED.xlsx

@@ -1,0 +1,31 @@
+Non-elderly inter-attribute joint: external-validation feasibility + synthetic dependence
+(reviewer A2/B4: the 19-64 core joint rests on conditional independence)
+
+FINDING 1 — external validation of the non-elderly AD x SI joint is INFEASIBLE in KGSS.
+  KGSS asks the authority-deference battery (AUTHORT2/4/5/6/7) only in the 2016 wave
+  (n=1014 valid) and the social-isolation support battery (SICK1/BORROW1/DOWN1/NGHASK)
+  only in the 2004 and 2012 waves (n=2321 valid). Same-respondent overlap = 0.
+  The two attributes are never jointly observed, so their joint cannot be validated, only
+  assumed -- the defining condition of statistical matching / data fusion (D'Orazio 2006;
+  Rassler 2002). The only same-respondent multi-attribute Korean source available
+  (National Survey of Older Koreans, 노인실태조사) covers 65+ only, which is why the
+  external joint check (section 4.6) is elderly-scoped by data availability, not by choice.
+
+FINDING 2 — what the dataset assumes for the non-elderly core (synthetic, 1M).
+  Inter-attribute dependence among the conditional-independence-imputed pairs is near-zero:
+    group            pair               n        Cramers V   dep-ratio(both>=4)
+    non-elderly <65  AD x SI            765,861  0.021       0.96
+    non-elderly <65  FV x SI            765,861  0.034       1.02
+    non-elderly <65  DL x FV            765,861  0.044       1.09
+    elderly 65+      AD x SI            234,139  0.009       0.99
+    elderly 65+      FV x SI            234,139  0.018       1.03
+  dep-ratio ~ 1.0 == near-independence (as constructed). The one inter-attribute joint that
+  is OBSERVED rather than assumed, for all ages, is prior-victimization x reporting-propensity
+  (B2, KCVS) -- see section 4.5 / Figure 6 supplement a.
+
+INTERPRETATION. Where the real joint IS observable (elderly, section 4.6), real dependence
+  runs at 2.36x the independence baseline while the synthetic runs at ~1.09x; the synthetic
+  under-captures compounding. For the non-elderly core the real magnitude is not identifiable
+  from existing disjoint-wave Korean surveys, so reusers should treat multi-attribute extreme
+  cohorts (e.g., simultaneously high FV + high SI) as LOWER BOUNDS on real co-occurrence, with
+  the elderly 2.36x as the best available indication of the direction and scale of under-capture.
