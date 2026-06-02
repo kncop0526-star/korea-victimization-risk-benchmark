@@ -9,7 +9,7 @@
 **Affiliations:**
 ¹ Korean National Police Agency, AI Policy Division; KAIST, Daejeon, Republic of Korea
 
-**\* Corresponding author:** Chihwa Lee, [email]; ORCID: 0009-0009-6959-1797
+**\* Corresponding author:** Chihwa Lee, chi0526@kaist.ac.kr; ORCID: 0009-0009-6959-1797
 
 ---
 
@@ -20,4 +20,4 @@ KVRB (Korea Victimization-Risk persona Benchmark) is a one-million-record synthe
 
 **Competing interests:** The author declares no competing interests.
 
-**Funding:** [Funding source / "None", to be completed]
+**Funding:** None.

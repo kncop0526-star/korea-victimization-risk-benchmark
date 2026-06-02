@@ -16,8 +16,8 @@ are not in the backbone.
 
 This dataset adds that layer. The method is survey-conditioned enrichment. Each behavioral attribute
 is sampled from the conditional distribution of a real Korean survey, and a pinned language model only
-renders the sampled value into first-person narrative. The model expresses values; it does not
-estimate them. Because attributes are drawn from survey conditionals, each attribute's marginal — conditional on its
+renders the sampled value into first-person narrative. The model is given each value and writes the
+narrative around it; it does not infer the value. Because attributes are drawn from survey conditionals, each attribute's marginal — conditional on its
 anchor cell — matches the source survey by construction, not by assertion. §4.1 reports this cell by
 cell (largest per-attribute deviation 0.0020 in total variation); it is mainly a claim about marginals.
 The joint distribution is modeled only partially — §4.5 characterizes what is captured (shared-demographic
@@ -41,8 +41,9 @@ population — none of which the demographic backbone alone supports. The cohort
 *susceptibility* segments, not realized-victim predictions: §5.1 shows that for voice-phishing, realized
 loss tracks exposure and income, so the layer constructs who is vulnerable to an approach, not who loses
 most. The inter-attribute joint is adjudicated out-of-sample against a same-respondent elderly survey (§4.6)
-— quantifying the conditional-independence under-capture and flagging an elderly digital-literacy marginal
-that needs recalibration — for the elderly cohort only; the non-elderly joint rests on stated conditional
+— quantifying the conditional-independence under-capture, with the elderly single-attribute prevalences
+recalibrated to that survey (low digital literacy 35% against its 37%) — for the elderly cohort only; the
+non-elderly joint is not externally identifiable from existing Korean surveys and rests on stated conditional
 independence. That validation also surfaced a policy-relevant victimology result reported separately.
 
 ## 2. Methods
@@ -74,7 +75,7 @@ Each attribute is conditioned on demographic cells and sampled from a weighted s
 | Attribute | Anchor source | Survey N | Conditioning cell |
 |---|---|---|---|
 | financial_vulnerability | 가계금융복지조사 2024 [3] | 18,314 | age_band × education_tier (sex-invariant; household-head proxy) |
-| digital_literacy | 디지털정보격차 실태조사 2024 (NIA) [4] | 7,000 | age_band × education_tier |
+| digital_literacy | 디지털정보격차 2024 (NIA) [4] (19–59); 노인실태조사 2023 [8] (60+, activity instrument) | 7,000; 10,078 | age_band × education_tier |
 | authority_deference | KGSS (AUTHORT, 2016) [5] | 922 | age_band × sex × education_tier |
 | social_isolation (structural v2) | KGSS (support battery, 2004+2012) | 2,686 | age_band × sex × education_tier |
 | prior_victimization | KCVS 2018 [6] | 12,601 | age × sex × edu (observed joint with reporting) |
@@ -94,7 +95,7 @@ attribute on shared demographics (age, plus sex and education where a survey rec
 respondents) lets common demographic causes induce some cross-attribute association instead of forcing
 independence. This is a partial, demographic-channel structure rather than a full joint model.
 Associations that no single survey measures on the same people — most cross-survey pairs — still rest
-on conditional independence given the demographic vector, which we state rather than conceal. How
+on conditional independence given the demographic vector. How
 closely this conditioning approximates the real Korean joint distribution is an open question, and one
 we expect reusers to test further; the release labels throughout which associations are measured and
 which are assumed.
@@ -117,15 +118,16 @@ covers all four Likert attributes; each adds one extractor call per record in th
 
 This release comprises:
 
-- **Enriched personas (v3, Route-B)** — 1,000,000 rows, backbone columns plus `attr_{financial_vulnerability,
+- **Enriched personas (v4, Route-B)** — 1,000,000 rows, backbone columns plus `attr_{financial_vulnerability,
   digital_literacy, authority_deference, social_isolation, prior_victimization, reporting_propensity}`,
-  in partitioned parquet (`enriched_1M_v3_parts/`, 9 parts, footer-verified) and CSV samples. v3 is the
+  in partitioned parquet (`enriched_1M_v4_parts/`, 9 parts, footer-verified) and CSV samples. v4 is the
   validated artifact: B1 conditioning (age × sex × education where a survey records all three on the same
-  respondents) plus the B2 observed PV × RP joint. **Schema note:** the elderly (65+) `attr_digital_literacy` is a within-cohort ordinal/relative measure, not a population prevalence (§4.6, §5.3) — do not read its elderly marginal as a prevalence.
+  respondents), the B2 observed PV × RP joint, and the elderly digital-literacy anchor recalibrated to
+  노인실태조사 2023 (§2.3, §4.6); it is otherwise identical to v3. **Schema note:** the elderly (65+) `attr_digital_literacy` is anchored to the 노인실태조사 2023 activity instrument (§2.3, §4.6); its elderly low-literacy marginal (35%) matches that survey's 37%. The non-elderly digital-literacy marginal reflects the NIA competency instrument.
 - **Narratives** — JSONL (`enriched_stage23.jsonl` full release; `enriched_stage23_N2000.jsonl` the
   stratified round-trip probe of §4.2): per-record `attr`, `attr_narrative`,
   `roundtrip_<attr>`, mismatch flags, and `gen_meta` (actual model, provider, pinned model).
-- **Anchor tables** — base CSVs plus the v3 anchors (`config/anchors/*_b1.csv` for the age × sex × edu
+- **Anchor tables** — base CSVs plus the anchors (`config/anchors/*_b1.csv` for the age × sex × edu
   conditioning, `kcvs_joint_b2.csv` for the observed PV × RP joint) with `.source.json` provenance.
 - **Code** — construction (`build_anchor_b1.py`, `build_anchor_kcvs_joint.py`, `build_anchor_fv_b1.py`,
   `enrich_stage1.py --b2`, `enrich_stage2_3.py`) and validation (`validate_fidelity.py --v3`,
@@ -159,8 +161,8 @@ elderly cliff (KVRB high-literacy share 28.9% → 5.3% across 45–59 → 75+; e
 ≈52%). Two instruments from two surveys recover the same latent gradient. We report this as suggestive
 only: with five age bands and both series declining monotonically with age, the rank agreement is close to
 automatic and carries little independent information — consistent with the competency anchor not being far
-off for one attribute, no more. (The synthetic digital-literacy marginal matches the NIA competency
-distribution it samples but diverges sharply from activity-based prevalence — see §4.6.) The joint across
+off for one attribute, no more. (The non-elderly synthetic digital-literacy marginal samples the NIA competency distribution; the elderly
+marginal is recalibrated to the activity-based 노인실태조사 instrument — see §2.3, §4.6.) The joint across
 attributes is adjudicated more directly in §4.6. External
 figures are approximate and the test is rank-based; convergent validity, not identity. (results/C1_external_validity.png.)
 
@@ -181,16 +183,22 @@ attribute a reader most often places one step off. This reverses the smaller N=2
 literacy round-tripped best — the larger stratified sample, which loads more sparse elderly and
 low-education cells, is the more honest estimate.
 
-A separate check addresses whether agreement is merely a model agreeing with itself. On the earlier
-200-narrative pass, a different provider — OpenAI gpt-4o-2024-11-20 — re-extracted each level from the
-same Gemini narratives (n = 120 after parse-rate exclusion). Between-model agreement held: weighted
-kappa 0.88 (authority deference), 0.89 (digital literacy), 0.84 (financial vulnerability), 0.77 (social
-isolation), within-one 0.89 to 1.00. The encoded level therefore survives a model boundary; it is in
-the text, not an artifact of one model reading its own output. Two cautions remain. The round-trip is
-synthetic throughout — no human re-read — so it measures whether the narrative faithfully encodes the
-fixed input, not whether a person would read it the same way. And N = 2,000 is a 0.2% probe of the
-million, stratified to span the cell range rather than to be representative. Summaries: within-model
-`results_N2000/roundtrip_summary.csv`, cross-model `results_xmodel/roundtrip_summary.csv`.
+A separate check addresses whether agreement is merely a model agreeing with itself. A different
+provider — OpenAI gpt-4o-2024-11-20 — re-extracted every level from the same 2,000 Gemini narratives.
+Between-model agreement held, and in fact ran at or above the within-model pass: weighted kappa 0.882
+(authority deference), 0.887 (financial vulnerability), 0.927 (social isolation), and 0.926 for digital
+literacy, with within-one agreement 0.988 to 1.000. The digital-literacy result is the informative one.
+The attribute that round-tripped weakest when Gemini re-read its own output (0.730) recovers at 0.926
+when an independent model reads the identical narratives — most of the within-model digital-literacy gap
+therefore sits in the generator's own decode step, not in the narrative. The encoded level survives a
+provider boundary, so it is in the text rather than an artifact of one model reading its own output.
+Two cautions still hold. The round-trip is synthetic throughout — no human re-read — so it measures
+whether the narrative faithfully encodes the fixed input, not whether a person would read it the same
+way; a human-coding study in which independent raters score a stratified 100–200-narrative sample
+blind to the sampled values is the planned extension that breaks this all-synthetic loop, and the rater
+protocol and sheet are released with the code (`src/build_human_reread_sheet.py`). And N = 2,000 is a 0.2% probe of the million, stratified to span the cell range rather than to be
+representative. Summaries: within-model `results_N2000/roundtrip_summary.csv`, cross-model
+`results_xmodel_N2000/roundtrip_summary.csv`.
 
 ### 4.3 Stereotype audit (Figure 5)
 
@@ -202,16 +210,19 @@ the marginal link runs through education tier, a justified conditioner, not thro
 and the largest residual in the set under v3 conditioning, authority deference by sex (Cramér's V =
 0.145). This is not an artifact the pipeline introduced: authority deference is anchored on KGSS, which
 records a real individual-level sex difference in deference, so conditioning on age × sex × education
-reproduces that measured relationship rather than fabricating one. Social isolation by sex (0.084) and
-the two KCVS attributes by sex (≈0.04) are measured KGSS/KCVS relationships in the same way; province
-residuals stay ≤ 0.021 across all attributes. These residuals inherit their anchors' sampling uncertainty — the deference anchor (KGSS, N = 922) and the isolation anchor (N = 2,686) are small — so the projected sex associations should be read with the source survey's confidence interval in mind, not as exact population values. The audit also caught one association the pipeline *did*
+reproduces that measured relationship rather than fabricating one. We checked this against the source
+survey directly: the synthetic authority-deference × sex residual (0.145) falls within KGSS's own
+AD × sex confidence interval (V = 0.077, 95% bootstrap CI 0.042–0.164, n = 974), confirming a reproduced
+rather than an introduced association. Social isolation by sex is the one case where the conditioning
+mildly over-induces: its synthetic residual (0.084) sits just above the KGSS SI × sex interval (0.025,
+95% CI 0.011–0.072, n = 2,708), so we flag it as a small amplification, not a faithful reproduction. The
+two KCVS attributes by sex (≈0.04) are measured relationships; province residuals stay ≤ 0.021 across all attributes. The audit also caught one association the pipeline *did*
 introduce, and we removed it: an earlier financial-vulnerability-by-sex link of 0.245, traced to
 household-head sex (heads are 71% male, which does not proxy persona sex). We cut it by making financial
 vulnerability sex-invariant, after which its residual falls to 0.033. The distinction the audit enforces
 — measured-and-surfaced versus introduced-and-removed — is the point: Figure 5 reports the full table
 for the reuser to weigh, flagging authority-deference × sex as a KGSS-grounded relationship to interpret,
-not a defect to discount. Audit code: `src/audit_stereotype.py`; full table:
-`results/stereotype_audit_v3.csv`.
+not a defect to discount. Audit code: `src/audit_stereotype.py`; full table: `results/stereotype_audit_v3.csv`; source-survey magnitude check: `src/validate_residual_magnitude_match.py`, `results/residual_magnitude_match.csv`.
 
 ### 4.4 Face validity
 
@@ -241,7 +252,7 @@ and how far to trust it. There is some structure, from two routes, and it is bou
 correlations both marginally and within age band. Conditioning each survey-direct attribute on shared
 demographics — age, plus sex and education where a survey records them on the same respondents — lifts
 the within-age correlations off zero; the largest is financial vulnerability with digital literacy at
-|r| ≈ 0.09, both tied to education. These stay small because the demographic channel only carries part
+|r| ≈ 0.08, both tied to education. These stay small because the demographic channel only carries part
 of the real covariance. One pair is sampled from a genuine observed joint rather than two independent marginals: victimization and reporting (KCVS, same respondents). The released pair matches that survey joint to within a per-cell total variation distance of 0.002 — but by construction, since it is drawn from it, so the number confirms faithful sampling, not that the survey's joint transfers to any other population. Every other cross-survey pair rests on conditional independence given the demographic vector — an assumption we state plainly and have not verified.
 
 Two cautions bound the gain. The conditioning induces correlation but not a within-cell joint, so the
@@ -269,73 +280,76 @@ depressed, ill, or short of money — the same structural-support construct the 
 shares no respondents and no instrument with the anchors, so for the joint the comparison is genuinely
 out-of-sample.
 
-Two results follow, and they cut in opposite directions. The real attributes are positively dependent:
-the share of elders who are at once high financial vulnerability, low digital literacy, and high social
+Two results follow. The inter-attribute joint comes first: the real attributes are positively dependent.
+The share of elders who are at once high financial vulnerability, low digital literacy, and high social
 isolation is 2.36 times what their marginals give under independence (95% bootstrap CI 2.20–2.55 [12]), and the
 real pairwise associations (Cramér's V: financial × digital 0.21, digital × isolation 0.13, financial ×
-isolation 0.11) run two to six times the released dataset's (0.09, 0.03, 0.02). The conditional-independence
+isolation 0.11) run two to six times the released dataset's (0.07, 0.04, 0.02). The conditional-independence
 structure the fusion rests on [13,14] under-states real compounding — a limitation §4.5 stated and we can now
-quantify rather than assert. The larger gap, though, is in a marginal, not the joint: the dataset places
-85% of elders at low digital literacy against 37% in the survey. Part of this is instrument difference — a
-competency battery versus a count of basic activities — but a 48-point gap is too large for that alone, and
-our own §4.1 external series (75+ internet use ≈52%) makes an 85% low-literacy elderly share implausibly
-pessimistic. We therefore do not treat the elderly digital-literacy marginal as a trustworthy prevalence:
-we compare the dependence structure (instrument-robust) for the joint claim, and we restrict the elderly
-digital-literacy attribute to within-cohort ordinal use, not population prevalence (§5.3). Recalibrating that
-anchor is a release blocker, not a deferred nicety.
+quantify rather than assert. The marginals come second, and here recalibration has closed the gap that an
+earlier version of this dataset carried. After re-deriving the elderly digital-literacy anchor from this
+same survey's activity instrument (§4.1, §2.3), the dataset places 35% of elders at low digital literacy
+against the survey's 37%; the high-financial-vulnerability (0.42 vs 0.40) and high-social-isolation (0.30 vs
+0.14) shares bracket the real values. The simultaneous-extreme rate is 5.5% in the dataset against 4.8% in
+the survey, within a percentage point of the real tail — it over-stated that tail twofold before the digital-
+literacy recalibration.
 
-| Quantity (elderly 65+) | Real (노인실태조사 2023) | KVRB v3 |
+| Quantity (elderly 65+) | Real (노인실태조사 2023) | KVRB |
 |---|---|---|
 | High financial-vulnerability share | 0.40 | 0.42 |
-| Low digital-literacy share | 0.37 | 0.85 |
+| Low digital-literacy share | 0.37 | 0.35 |
 | High social-isolation share | 0.14 | 0.30 |
-| Simultaneous-extreme rate | 0.048 | 0.116 |
-| Independence-implied rate | 0.021 | 0.106 |
-| **Dependence ratio (extreme ÷ independence)** | **2.36** | **1.09** |
-| Pairwise V (FV×SI / FV×DL / DL×SI) | 0.11 / 0.21 / 0.13 | 0.02 / 0.09 / 0.03 |
+| Simultaneous-extreme rate | 0.048 | 0.055 |
+| Independence-implied rate | 0.021 | 0.043 |
+| **Dependence ratio (extreme ÷ independence)** | **2.36** | **1.29** |
+| Pairwise V (FV×SI / FV×DL / DL×SI) | 0.11 / 0.21 / 0.13 | 0.02 / 0.07 / 0.04 |
 
-The reading is that the dataset is a faithful sampler of its anchors (§4.1) whose realized joint is partial
-and conservative in dependence yet pessimistic in the elderly digital-literacy marginal. A reuser building
-compound-vulnerability cohorts should treat the co-occurrence of extremes as under-modelled and the
-absolute elderly digital-exclusion rate as over-stated, and should validate against a same-respondent
-source where one exists, as we did here. This external check is elderly-scoped (65+); the joint for the
-non-elderly majority of the release is not externally validated and rests on the stated conditional
-independence of §4.5, which a future release should test on a non-elderly band. Code:
-`src/validate_joint_external_noin2023.py`; table `results/joint_external_noin2023.csv`.
+The reading is that the dataset is a faithful sampler of its anchors (§4.1) whose single-attribute elderly
+prevalences now match an independent same-respondent survey, while its realized joint stays partial and
+conservative in dependence: a reuser building compound-vulnerability cohorts should treat the co-occurrence
+of extremes as under-modelled — the real 2.36× dependence against the dataset's 1.3× is the scale of that
+under-capture — even though the marginals are calibrated.
+
+This external check is elderly-scoped (65+) because the only same-respondent multi-attribute Korean survey
+available covers the elderly. We tested whether the non-elderly joint could be validated the same way and
+found that it cannot: the KGSS administers the authority-deference battery (2016) and the social-isolation
+support battery (2004, 2012) to disjoint respondents, so those attributes are never jointly observed and
+their joint cannot be validated, only assumed — the defining condition of statistical matching [13,14]. For
+the 19–64 core, then, one inter-attribute joint is observed rather than assumed (prior-victimization ×
+reporting-propensity, from KCVS, §4.5); the remaining pairs rest on conditional independence and run near-zero
+in the release by construction (Cramér's V below 0.05 across pairs). Reusers should treat non-elderly
+compound-vulnerability cohorts as lower bounds on real co-occurrence, with the elderly 2.36× as the best
+available indication of the direction and scale of the under-capture. Code:
+`src/validate_joint_external_noin2023.py`, `src/validate_nonelderly_joint.py`; tables
+`results/joint_external_noin2023.csv`, `results/nonelderly_joint_bound.txt`.
 
 ## 5. Usage Notes
+
+**Caveat for compound-risk use.** The inter-attribute joint under-states the real co-occurrence of vulnerabilities (elderly dependence 2.36× real against 1.29× in the release; §4.6). Cohorts defined by *several* simultaneous extremes — for example high financial vulnerability and high social isolation together — are therefore lower bounds. Do not size or target real interventions on a released compound rate without applying the §4.6 under-capture factor; the marginals are calibrated, the joint tail is conservative.
 
 ### 5.1 Demonstration — elderly voice-phishing cohort (Figure 4)
 
 Selecting the cohort prevention work targets (age ≥ 65, single-person household, lower education)
-returns 44,362 personas, 4.4% of the million — slightly below the 5–8% the cohort spec anticipated.
-The cohort's risk profile separates from the population on the dimensions voice-phishing exploits:
-low digital literacy at 0.92 versus 0.42 (×2.2), high authority deference at 0.61 versus 0.41 (×1.5).
-Financial vulnerability barely moves (0.47 versus 0.46, ×1.0) and social isolation does not rise (0.31
-versus 0.32, ×1.0). Isolation stays flat even though it now conditions on education, because the cohort's
-defining axis — single-person household — is not a conditioner for social_isolation, and the age ×
-education channel nets flat for this group (§2.3); a household-type-conditioned anchor would change this.
-The profile is a usage demonstration of how to query the layer, not an independent finding and not a
-targeting recommendation: it builds a high-*susceptibility* cohort, which — as the voice-phishing caveat
-below shows — is not the same as a high realized-*loss* cohort, so an analyst directing real interventions
-must intersect this susceptibility profile with an exposure/income variable. The attribute draw is driven by age, sex, and education — the v3
-conditioners; selecting on occupation, region, or household type does not shift the attribute
-distributions, so reusers should read a cohort's attribute profile as demographic-driven along those three axes.
+returns 44,362 personas, 4.4% of the million. The cohort separates from the population on the dimensions
+voice-phishing exploits — low digital literacy 0.43 versus 0.24 (×1.8) and high authority deference 0.61
+versus 0.41 (×1.5) — while financial vulnerability and social isolation stay flat (×1.0 each); isolation
+because its defining axis here, single-person household, is not one of its anchor conditioners (§2.3). The
+attribute draw runs through age, sex, and education, so selecting on occupation, region, or household type
+does not shift the attribute profile. This is a query demonstration, not a targeting recommendation: it
+builds a high-*susceptibility* cohort, which is not the same as a high realized-*loss* cohort.
 
-Applying the same external survey to this use case adds a caution worth stating. Among the 10,078 elders,
-voice-phishing financial loss does not fall on the most digitally excluded; it rises with digital engagement
-(smartphone users 1.75% vs non-users 0.34%; odds ratio 3.0) and, holding income, with both income and
-engagement, reaching about 4% among higher-income digital elders. Realized loss tracks exposure and
-transaction capacity, which run opposite to the digital illiteracy that susceptibility-based accounts
-emphasize. The cohort selected here — low digital literacy, single-person household, lower education — is
-therefore high in *susceptibility* but not necessarily in realized *loss*, a distinction prevention
-targeting should keep; the full income × engagement × loss analysis is developed separately (in preparation).
-The cohort remains a valid demonstration of how to query the layer, not a victimization prevalence claim.
+A second query on the same external survey shows why the distinction matters. Among the 10,078 elders,
+voice-phishing financial loss rises with digital engagement (smartphone users 1.75% versus non-users 0.34%;
+odds ratio 3.0), not with digital exclusion — realized loss tracks exposure, the opposite of the
+susceptibility a low-digital-literacy cohort captures. The full income × engagement × loss analysis is
+developed separately (in preparation).
 
 ### 5.2 Other uses
 
-Cohort selection for GABM/agent simulation, prevention-message A/B testing, and officer-training
-victim interviews. The shared persona pool also serves robustness substrates for related tracks.
+The first-person narrative layer is the interface that lets a persona enter an LLM-agent context directly:
+GABM/agent-based simulation, prevention-message A/B testing, and officer-training victim interviews consume
+the narrative, not the structured row, so the narrative is what makes the structured attributes usable as
+agents rather than as a table. The shared persona pool also serves as a robustness substrate for related tracks.
 
 ### 5.3 Limitations
 
@@ -345,19 +359,27 @@ so an attribute and a non-conditioned selection variable can still move independ
 family-cohabiting persona can draw maximum structural isolation.
 Narrative realization also produces occasional life-course timing that does not cohere with the
 sampled demographics — a 20-year-old already holding a college degree and a job — which both
-face-validity raters independently flagged (§4.4) but the pipeline does not yet prevent. Inter-attribute
+face-validity raters independently flagged (§4.4). The release carries a boolean `life_course_valid` (117
+records, 0.01%, flagged `False` where the backbone education level is chronologically impossible for the
+age); exclude them with `df = df[df.life_course_valid]` in pandas or `WHERE life_course_valid` in SQL. This
+deterministic `life_course_valid`
+flag that marks records whose education level is chronologically impossible for the persona's age, so
+reusers can filter them; because these originate in the demographic backbone rather than the behavioral
+layer, we flag rather than delete them, preserving the backbone's calibration. Inter-attribute
 structure is partial and runs mainly through shared demographics: conditioning induces only modest
 within-age correlation (§4.5), one pair (victimization–reporting) comes from an observed joint, and most
 cross-survey correlations among vulnerabilities — financial strain and isolation, say — are not directly
 modeled but rest on stated conditional independence, so simulation users needing fuller covariance should
 add it and validate against their own target. The `reporting_propensity` 75+ cell is low-N. `scam_susceptibility` is Tier-3 qualitative-only and excluded from quantitative
-claims. Two limits are now quantified rather than asserted: the cross-survey conditional-independence
-assumption under-states the elderly compound-vulnerability tail by about 2.4× (§4.6, elderly-scoped; the
-non-elderly joint is unvalidated), and the elderly digital-literacy marginal runs implausibly pessimistic
-against a same-respondent survey (85% vs 37%). Until that anchor is recalibrated, the elderly
-digital-literacy attribute must be used as a within-cohort ordinal/relative measure only — not as a
-population prevalence, and not for real-world budget or resource allocation (e.g., physical-outreach vs
-digital-campaign sizing); valid use is correlational and structural testing. Results should be replicated on
+claims. Two limits remain quantified rather than asserted. First, the cross-survey conditional-independence
+assumption under-states the elderly compound-vulnerability tail by about 2.4× (§4.6); for the non-elderly
+core this under-capture cannot be measured directly, because no Korean survey observes these attributes on
+the same working-age respondents — the KGSS administers the authority-deference and social-isolation
+batteries to disjoint waves (§4.6) — so non-elderly multi-attribute extremes should be read as lower bounds.
+Second, the elderly digital-literacy marginal, previously implausibly pessimistic against a same-respondent
+survey, has been recalibrated to that survey's activity instrument (35% low against 37%; §2.3, §4.6); it now
+carries a population prevalence rather than a within-cohort ordinal only. The non-elderly digital-literacy
+marginal still reflects the NIA competency instrument and should be read on that construct. Results should be replicated on
 real population data before any operational use.
 
 ### 5.4 Ethics & dual-use
@@ -374,9 +396,13 @@ it is not a list of people and must not be used as one. Targeting real individua
 and presenting synthetic personas as real victims are out of scope and prohibited.
 
 A profile built to direct prevention could also point an offender toward softer targets. The release
-limits that exposure. Operational cohort thresholds are abstracted and kept in a
-git-ignored local config, so the public repository ships the method rather than the cutoffs.
-scam_susceptibility, the one attribute with no survey anchor, stays Tier-3 qualitative-only and out of
+limits that exposure in ways that do not depend on withholding the method. No record corresponds to a real
+person, so there is no individual to re-identify; the protection differential privacy gives survey microdata
+is not the relevant control for a fully synthetic population. The demographic intersections the dataset
+exposes (for example, low-digital-literacy high-authority-deference elders) already appear as marginals in
+the official statistics it is built from, so what is released is population-level structure that is already
+public, not individual targeting information. The one attribute that would turn vulnerability description into
+operational targeting, scam_susceptibility, has no survey anchor and stays Tier-3 qualitative-only, out of
 the quantitative release. Published anchors are aggregate conditional tables; the underlying survey
 microdata is not.
 
@@ -387,11 +413,11 @@ raw microdata is not redistributed. Full statements are in ETHICS.md and LICENSE
 
 ## 6. Code & Data Availability
 
-- **Code:** MIT, `korea-victimization-risk-benchmark/` (GitHub; public at submission).
-- **Derived data & docs:** CC-BY-4.0; archived at Zenodo (DOI finalized at submission).
-- **Backbone:** NVIDIA Nemotron-Personas-Korea (release 2026-04-20), CC-BY-4.0; reproduce from the pinned
-  upstream version (exact snapshot id/hash recorded in the repo to guard against upstream drift); not redistributed here.
-- **Author / citation:** `CITATION.cff` (name, ORCID) completed before deposit.
+- **Code:** MIT, https://github.com/kncop0526-star/korea-victimization-risk-benchmark (release v1.0).
+- **Derived data & docs:** CC-BY-4.0; archived at Zenodo, DOI 10.5281/zenodo.20500537.
+- **Backbone:** NVIDIA Nemotron-Personas-Korea (release 2026-04-20, revision
+  d0a9272116a2ebf139b964ca72b8b8f604616689), CC-BY-4.0; reproduce from this pinned upstream revision; not redistributed here.
+- **Citation:** Lee, Chihwa (ORCID 0009-0009-6959-1797); see CITATION.cff.
 
 ---
 
@@ -432,14 +458,16 @@ not to estimate.
 Stage-3 re-extraction asked the model for a single integer 1–5 per attribute, no explanation. The
 generation and extraction model was requested as `gemini-2.5-flash`; this is a stable pointer, not a
 dated snapshot, because the dated `gemini-2.0-flash-001` was retired for new accounts at the time of
-the run. The exact responding model id is captured per record in `gen_meta.actual_model`. Temperature
-was 0.7 for generation. For full reproducibility a dated snapshot should be pinned once available.
+the run. The exact responding model id is captured per record in `gen_meta.actual_model`; for this release it is
+uniformly `gemini-2.5-flash` across all 1M records. Temperature was 0.7 for generation. The dated snapshot
+`gemini-2.5-flash` aliased at run time was the provider default; a dated snapshot id should be pinned at the
+revision stage when the provider exposes one.
 
-### Figures (in `results/`)
+### Figures (DL-affected panels in `results_v4/`, others in `results/`)
 - **F1** `F1_pipeline.png` — construction pipeline (sample → render → round-trip).
-- **F2** `F2_distributional_fidelity_v3.png` — by-construction fidelity to survey anchors (v3, 1M; weighted per-cell TVD <= 0.0034).
-- **F3** `results_N2000/F3_roundtrip_consistency.png` — round-trip reliability (gemini-2.5-flash, stratified N=2000; qwk 0.73-0.89, within-1 0.92-0.97). Cross-model confirmation (gpt-4o-2024-11-20, n=120; qwk 0.77-0.89) in `results_xmodel/`.
-- **F4** `F4_elderly_phishing_cohort_v3.png` — elderly voice-phishing cohort (usage example, not validation; v3, 1M).
-- **F5** `F5_stereotype_audit_v3.png` — protected-attribute audit (v3; max residual Cramer V = 0.145, AD x sex, a measured KGSS relationship).
-- **F6** `F6_joint_b1b2.png` — inter-attribute structure under Route-B (within-age |r| up to 0.093); `F6prime_pvrp_joint_b2.png` — observed PV x RP joint (per-cell TVD <= 0.002); `C1_external_validity.png` — out-of-sample convergent validity (Spearman rho 0.975).
-- **F7** `F7_external_joint_noin2023.png` — external joint validation vs 노인실태조사 2023 (elderly 65+): real dependence 2.36x independence (95% CI 2.20-2.55) vs KVRB near-independent (1.09x); pairwise Cramér's V real > KVRB on all three pairs.
+- **F2** `results_v4/F2_distributional_fidelity.png` — by-construction fidelity to survey anchors (v4, 1M; weighted per-cell TVD <= 0.0034; digital-literacy 0.0019 against the recalibrated anchor).
+- **F3** `results_N2000/F3_roundtrip_consistency.png` — round-trip reliability (gemini-2.5-flash, stratified N=2000; qwk 0.73-0.89, within-1 0.92-0.97). Cross-model confirmation (gpt-4o-2024-11-20, N=2000; qwk 0.88-0.93, within-1 0.99-1.00) in `results_xmodel_N2000/`.
+- **F4** `results_v4/F4_elderly_phishing_cohort.png` — elderly voice-phishing cohort (usage example, not validation; v4, 1M; low digital-literacy lift x1.8 against a recalibrated 24% population rate).
+- **F5** `results_v4/F5_stereotype_audit.png` — protected-attribute audit (v4; max residual Cramer V = 0.145, AD x sex, a measured KGSS relationship; digital-literacy x sex residual 0.005).
+- **F6** `results_v4/F6_joint_independence.png` — inter-attribute structure under Route-B (within-age |r| up to 0.077, v4); `F6prime_pvrp_joint_b2.png` — observed PV x RP joint (per-cell TVD <= 0.002); `C1_external_validity.png` — out-of-sample convergent validity (Spearman rho 0.975 across n=5 age bands; the p-value is uninformative at this n, per §4.1).
+- **F7** `results_v4/F7_external_joint_noin2023.png` — external joint validation vs 노인실태조사 2023 (elderly 65+): real dependence 2.36x independence (bootstrap CI 2.20-2.55) vs KVRB 1.29x; the recalibrated digital-literacy marginal now matches (35% low vs 37%); pairwise Cramér's V real > KVRB on all three pairs.

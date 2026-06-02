@@ -26,9 +26,9 @@ keywords:
   - agent-based modeling
   - police administration
   - Korea
-doi: "10.5281/zenodo.20484546"
-version: 1.0.0
-date-released: "2026-06-01"
+doi: "10.5281/zenodo.20500537"
+version: 1.1.0
+date-released: "2026-06-02"
 references:
   - type: dataset
     title: "Nemotron-Personas-Korea"
