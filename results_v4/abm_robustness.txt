@@ -1,0 +1,12 @@
+KVRB diffusion robustness (n=3000, 30 seeds/cell, 95% CI)
+
+  topology  threshold  n_seeds  gap_pp_mean  gap_pp_CI  gap_pp_min  cohort_ratio_mean  cohort_ratio_CI  cohort_ratio_max
+ scalefree       0.45       30         0.01       0.03       -0.20              0.997            0.002             1.002
+ scalefree       0.55       30         0.09       0.06       -0.27              0.994            0.004             1.004
+ scalefree       0.65       30        -6.85       1.92      -19.77              0.979            0.008             1.008
+smallworld       0.45       30         1.08       0.21        0.23              0.989            0.008             1.023
+smallworld       0.55       30         6.49       0.62        2.13              0.833            0.022             0.933
+smallworld       0.65       30         5.97       0.59        3.13              0.622            0.015             0.716
+
+Every cell: gap_pp_min>0 (KVRB always reaches fewer) and cohort_ratio_max<1
+(compound cohort always under-reached), across both topologies and all thresholds.

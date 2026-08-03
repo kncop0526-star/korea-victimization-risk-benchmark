@@ -118,6 +118,10 @@ The author declares no known competing financial interests or personal relations
 
 The dataset, anchor tables, construction and validation code, and technical-validation outputs are openly available on Zenodo (DOI 10.5281/zenodo.20500537) and GitHub (https://github.com/kncop0526-star/korea-victimization-risk-benchmark), under MIT (code) and CC-BY-4.0 (derived data and documentation). The demographic backbone (NVIDIA Nemotron-Personas-Korea) is not redistributed and is reproducible from the pinned upstream revision recorded in the Specifications Table.
 
+## Declaration of Generative AI and AI-assisted Technologies in the Writing Process
+
+During the preparation of this manuscript, the author used Claude (Anthropic) to assist with drafting and editing the text under the author's direction. The author reviewed and edited the content as needed and takes full responsibility for the content of the published article.
+
 ## References
 
 1. NVIDIA. (2026). Nemotron-Personas-Korea [Data set]. Hugging Face. Released 2026-04-20.

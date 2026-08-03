@@ -177,8 +177,8 @@ def make_figure(report, summary, out_png, v3=False):
     for k, v in enumerate(s["weighted_TVD"]):
         axC.text(v + max(s["weighted_TVD"]) * 0.02 + 1e-5, k, f"{v:.4f}", va="center", fontsize=6.5)
     axC.margins(x=0.20)
-    fig.suptitle("F2  Distributional fidelity of KVRB %s synthetic attributes to Korean survey anchors"
-                 % ("v3 (Route-B)" if v3 else ""), fontsize=11, y=1.02)
+    fig.suptitle("Distributional fidelity of KVRB synthetic attributes to Korean survey anchors",
+                 fontsize=11, y=1.02)
     fig.savefig(out_png, bbox_inches="tight"); plt.close(fig)
 
 

@@ -91,7 +91,7 @@ def make_figure(df: pd.DataFrame, mask: pd.Series, out_png: Path, min_age: int) 
         axA.text(p + 0.01, k - h / 2, f"{p:.2f}", va="center", fontsize=6.8, color="0.4")
         axA.text(0.985, k, f"x{lift:.1f}" if pd.notna(lift) else "", va="center", ha="right",
                  fontsize=7, color="0.2", style="italic")
-    axA.set_title("(A) Crime-prevention risk profile (share-at-risk)")
+    axA.set_title("(A) Behavioral risk profile (share-at-risk)")
     axA.legend(fontsize=7.5, loc="center right", bbox_to_anchor=(0.99, 0.34), framealpha=0.95)
 
     # Panel B: digital literacy distribution, cohort vs population
@@ -107,7 +107,7 @@ def make_figure(df: pd.DataFrame, mask: pd.Series, out_png: Path, min_age: int) 
     axB.set_title("(B) Digital literacy: cohort vs population")
     axB.legend(fontsize=7.5, framealpha=0.9)
 
-    fig.suptitle(f"F4  Demonstration — elderly voice-phishing cohort (age >= {min_age}, "
+    fig.suptitle(f"Cohort query: compound-vulnerability cohort (age >= {min_age}, "
                  f"single-person, lower-education)", fontsize=11, y=1.03)
     fig.text(0.5, -0.04, "Profile is by construction from survey conditionals tied to the cohort's "
              "demographics — a usage demo, not an independent finding.",

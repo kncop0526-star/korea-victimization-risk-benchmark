@@ -1,0 +1,17 @@
+KVRB ABM demonstration - behavioural structure changes ABM outcomes
+==================================================================
+n: 3000
+steps: 25
+seed: 42
+final_reach_KVRB: 0.8943
+final_reach_shuffled: 0.965
+reach_gap_pp: 7.07
+compound_cohort_share: 0.0327
+compound_cohort_n: 98
+cohort_reach_KVRB: 0.6633
+rest_reach_KVRB: 0.9021
+cohort_reach_ratio: 0.735
+
+Identical model/seed; the only difference is whether agents carry
+KVRB's demographically structured behavioural attributes (A) or the
+same marginals with the joint shuffled out (B).

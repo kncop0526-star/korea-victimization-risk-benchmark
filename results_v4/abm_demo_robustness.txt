@@ -1,0 +1,13 @@
+KVRB ABM demo - 5-seed robustness (n=3000, steps=25)
+seed  reach_KVRB  reach_shuf  gap_pp  cohort_ratio
+1     0.899      0.967      +6.7    0.631
+7     0.889      0.977      +8.8    0.85
+42    0.894      0.965      +7.1    0.735
+100   0.897      0.977      +8.0    0.956
+2024  0.921      0.971      +5.0    0.739
+
+gap_pp: mean 7.1, range [5.0, 8.8] (all positive)
+cohort under-reach ratio: range [0.63, 0.96] (all < 1)
+Direction robust across seeds: structured (KVRB) init lowers aggregate reach
+and concentrates an under-reached compound-vulnerability cohort; the marginals-
+only counterfactual overstates reach and hides the pocket.

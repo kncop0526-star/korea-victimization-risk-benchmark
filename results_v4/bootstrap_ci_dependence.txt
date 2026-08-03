@@ -1,0 +1,9 @@
+Bootstrap CI for the elderly compound-extreme dependence ratio (v2, definitions matched)
+source: 2023_총괄_20260601_13406.csv  (N=10,078, aged 65+)
+point estimate : 2.3026  (matches committed 2.3026)
+95% percentile CI : 2.1187 - 2.4913
+resamples : 2,000 (seed 42)
+method : respondent-level resampling with replacement; weighted marginals,
+         simultaneous-extreme rate, and independence-implied rate recomputed
+         within each resample; percentile interval of their ratio.
+flag definitions identical to validate_joint_external_noin2023.py

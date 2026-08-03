@@ -114,7 +114,7 @@ def make_figure(res: pd.DataFrame, out_png: Path) -> None:
             ax.text(m + 0.004, k + h / 2, f"{m:.3f}", va="center", fontsize=6.3, color="0.35")
             ax.text(r + 0.004, k - h / 2, f"{r:.3f}", va="center", fontsize=6.3, color="#c0392b")
         ax.legend(fontsize=6.8, loc="lower right", framealpha=0.9)
-    fig.suptitle("F5  Stereotype audit — protected-attribute association is negligible after "
+    fig.suptitle("Stereotype audit: protected-attribute association is negligible after "
                  "conditioning on survey-justified cells", fontsize=10.5, y=1.02)
     fig.savefig(out_png, bbox_inches="tight")
     plt.close(fig)

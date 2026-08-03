@@ -1,0 +1,5 @@
+topology,eps,noncons_real,joint_pp,joint_CI,coupling_pp,coupling_CI,full_pp,full_CI,blockVSreal_pp,cohort_strand_real,cohort_strand_shuf
+smallworld,0.1,57.22,0.69,1.78,-4.89,1.67,-4.21,1.57,-6.68,74.4,61.3
+smallworld,0.16,30.91,-2.23,1.88,-5.28,1.96,-7.52,1.35,-7.42,54.3,32.4
+scalefree,0.1,25.05,-0.94,0.81,3.04,1.09,2.1,1.06,1.37,55.9,49.0
+scalefree,0.16,11.24,0.45,0.59,0.09,0.56,0.54,0.59,0.76,41.4,29.3

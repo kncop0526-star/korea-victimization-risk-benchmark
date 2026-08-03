@@ -1,0 +1,7 @@
+topology,threshold,reach_eld_indep,reach_eld_indep_CI,reach_eld_inject,reach_eld_inject_CI,inject_minus_indep_pp
+scalefree,0.45,99.92,0.02,99.92,0.01,0.01
+scalefree,0.55,99.84,0.04,99.87,0.03,0.03
+scalefree,0.65,96.93,0.27,97.42,0.27,0.5
+smallworld,0.45,98.94,0.2,99.0,0.18,0.06
+smallworld,0.55,92.53,0.5,93.21,0.46,0.68
+smallworld,0.65,79.41,0.44,80.59,0.48,1.19

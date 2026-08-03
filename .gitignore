@@ -53,3 +53,6 @@ manuscript/EXTERNAL_*
 # re-assert: the private human re-read key + FILLED rater answers stay ignored regardless of the rescues above
 results/human_reread_key.csv
 results/*_FILLED.xlsx
+
+# Local staging for files pending manual deletion
+_to_delete/

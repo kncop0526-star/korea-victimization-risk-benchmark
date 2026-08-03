@@ -149,7 +149,7 @@ def make_figure(summ: pd.DataFrame, confus: dict, out_png: Path, is_stub: bool) 
         fig.colorbar(im, ax=axB, fraction=0.046, pad=0.04)
 
     tag = "  [DEMO / STUB — replace with pinned-LLM pass]" if is_stub else ""
-    fig.suptitle("F3  Round-trip consistency of KVRB narrative realization" + tag,
+    fig.suptitle("Round-trip consistency of KVRB narrative realization" + tag,
                  fontsize=11, y=1.03)
     fig.savefig(out_png, bbox_inches="tight")
     plt.close(fig)

@@ -1,18 +1,20 @@
 Chihwa Lee
 Korean National Police Agency, AI Policy Division; KAIST
 chi0526@kaist.ac.kr · ORCID 0009-0009-6959-1797
-June 1, 2026
 
-To the Editors, *Scientific Data* (Nature Portfolio)
+To the Editors, *Journal of Artificial Societies and Social Simulation*
 
 Dear Editors,
 
-We submit our Data Descriptor, **"A survey-anchored synthetic persona dataset with crime-prevention behavioral attributes for Korean police-administration research"** (the KVRB dataset), for consideration.
+I am submitting the manuscript **"Survey-Anchored Synthetic Populations with Behavioral Attributes for Agent-Based Social Simulation: Data Fusion, Out-of-Sample Validation, and Which Fused Structure a Model Needs"** for consideration as a research article.
 
-Demographically realistic synthetic populations of Koreans already exist, but they lack the behavioral and victimization variables that crime-prevention research turns on. KVRB adds that layer to a one-million-record backbone by **sampling each behavioral attribute from a real Korean national survey conditional and using a language model only to render the sampled value into narrative — never to estimate it**. This "render-not-estimate" design keeps the behavioral layer anchored to official statistics rather than to model priors.
+Agent-based models increasingly depend on populations whose agents differ in behavior, not only in demographics. Building such a population is a data-fusion problem: the behavioral attributes worth simulating live in separate surveys that share no respondents, so their joint distribution cannot be identified and is usually assumed under conditional independence and never checked. Chapuis, Taillandier and Drogoul's review in this journal (2022) names exactly this by-construction validation as the field's recurring weakness. The manuscript answers that critique not with another marginal check but by carrying the validation outside the source data and into a model.
 
-We believe the dataset fits *Scientific Data* for three reasons. First, it is a reusable resource with fully documented provenance: every attribute names its survey anchor, conditioning cells, and strength tier. Second, the technical validation is unusually candid about what the construction does and does not establish — distributional fidelity is reported as a by-construction check of the sampler, narrative round-trip reliability is reported honestly (including a mediocre 0.730 kappa for digital literacy), and, most importantly, the inter-attribute **joint is validated out-of-sample for the elderly cohort against a same-respondent survey not used as an anchor, quantifying the conditional-independence error (2.36× the independence baseline; 95% CI 2.20–2.55)** rather than asserting joint validity. Third, the descriptor states its limits at the schema level — the elderly digital-literacy marginal has been recalibrated to that same-respondent survey (35% low against its 37%) and now carries a population prevalence, while the inter-attribute joint stays externally validated only for the elderly, because no Korean survey observes these attributes on the same working-age respondents — so reusers know exactly how far to trust each field.
+Concretely, the paper constructs a one-million-record synthetic population of Korea and labels every inter-attribute pair as measured or assumed. It validates the assumed joint out-of-sample against an independent same-respondent survey, where real elderly co-occurrence runs at 2.30 times the independence baseline against the released 1.29. A controlled agent-based experiment then decomposes which part of the fused structure a model actually responds to, and the result is non-obvious. Demographic coupling drives aggregate simulation outcomes, whereas the cross-survey inter-attribute joint that fusion cannot identify is second-order for aggregate outcomes yet first-order for distributional ones: it governs who is left unreached. The ordering replicates under a second mechanism, bounded-confidence opinion dynamics, and on a community-structured network. The paper is candid about the single assumed-joint validation locus and the stylized model as scoped limitations rather than settled generality.
 
-All code, anchor tables, and the technical-validation outputs are openly released (MIT for code, CC-BY-4.0 for derived data and documentation); the dataset is archived at Zenodo (DOI 10.5281/zenodo.20500537) and openly on GitHub (github.com/kncop0526-star/korea-victimization-risk-benchmark), and the backbone is reproducible from its pinned upstream revision. No record corresponds to a real person, so there is no individual to re-identify, and the one attribute that would convert vulnerability description into operational targeting (scam_susceptibility) is withheld from the quantitative release.
+The work is committed to open, reproducible social simulation: the population, the survey-derived anchor tables, and all construction, validation, and simulation code are openly released under permissive licenses, with the two agent-based models documented in ODD-protocol form.
 
-This manuscript is original, not under consideration elsewhere,
+The manuscript is original, is not under consideration elsewhere, and reports no competing interests. Thank you for your consideration.
+
+Sincerely,
+Chihwa Lee
