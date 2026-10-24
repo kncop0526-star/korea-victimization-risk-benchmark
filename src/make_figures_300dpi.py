@@ -196,7 +196,9 @@ def figure2():
     ax[0].set_xticks(x); ax[0].set_xticklabels(catsA, fontsize=6.5)
     ax[0].set_ylabel("% of elderly (65+)")
     ax[0].set_ylim(0, 62)
-    ax[0].annotate("DL low: 35% released vs 37% real\n(85% before recalibration)",
+    # shares computed from the data; 85% is the pre-recalibration build (results/joint_external_noin2023.txt, DLlo=0.852)
+    ax[0].annotate(f"DL low: {s['share_DLlo'] * 100:.0f}% released vs {r['share_DLlo'] * 100:.0f}% real\n"
+                   "(85% before recalibration)",
                    xy=(1 + w/2, s["share_DLlo"] * 100 + 0.8), xytext=(1.75, 49),
                    fontsize=6.5, arrowprops=dict(arrowstyle="->", color="gray", lw=0.7))
     tag(ax[0], "A", "Marginals and joint tail")
@@ -212,7 +214,7 @@ def figure2():
     for xi, v in zip(xb + w/2, sb):
         ax[1].text(xi, v + 0.004, f"{v:.2f}", ha="center", fontsize=6.5)
     ax[1].set_xticks(xb); ax[1].set_xticklabels(catsB)
-    ax[1].set_ylabel("Cramer's V"); ax[1].set_ylim(0, 0.25)
+    ax[1].set_ylabel("Cramér's V"); ax[1].set_ylim(0, 0.25)
     tag(ax[1], "B", "Inter-attribute dependence (real > released)")
 
     top_legend(fig, [Patch(color=GREEN, label="real survey (National Survey of Older Koreans 2023)"),
@@ -237,7 +239,7 @@ def figure3():
         ax[k].set_yticks(y); ax[k].set_yticklabels(labels)
         ax[k].invert_yaxis()
         ax[k].set_xlim(0, 0.17)
-        ax[k].set_xlabel("Cramer's V")
+        ax[k].set_xlabel("Cramér's V")
         tag(ax[k], letter, f"attribute x {prot}")
     top_legend(fig, [Patch(color=GRAY, label="marginal V (before conditioning)"),
                      Patch(color=BLUE, label="residual V in the released population (within justified cells)")],
@@ -300,10 +302,13 @@ def figure5():
     dec = pd.read_csv(V4 / "abm_decompose.csv")
     grid = pd.read_csv(V4 / "abm_discriminate_grid.csv")
     fig, ax = plt.subplots(1, 3, figsize=(6.8, 2.4))
+    # symmetric y-limit wide enough for every error bar in panels A and B
+    lim = float(np.ceil(max((dec["coupling_pp"].abs() + dec["coupling_CI"]).max(),
+                            (dec["joint_pp"].abs() + dec["joint_CI"]).max()) + 0.5))
 
     for k, (topo, letter, title) in enumerate([
             ("smallworld", "A", "Small-world:\ncoupling drives the gap"),
-            ("scalefree", "B", "Scale-free:\nthe gap vanishes")]):
+            ("scalefree", "B", "Scale-free:\ngap vanishes, then flips")]):
         sub = dec[dec["topology"] == topo]
         x = np.arange(len(sub)); w = 0.38
         ax[k].bar(x - w/2, sub["coupling_pp"], w, yerr=sub["coupling_CI"],
@@ -313,7 +318,7 @@ def figure5():
         ax[k].axhline(0, lw=0.7, color="black")
         ax[k].set_xticks(x); ax[k].set_xticklabels(sub["threshold"])
         ax[k].set_xlabel("contagion threshold")
-        ax[k].set_ylim(-8.5, 8.5)
+        ax[k].set_ylim(-lim, lim)
         if k == 0:
             ax[k].set_ylabel("reach-gap component (pp)")
         tag(ax[k], letter, title)

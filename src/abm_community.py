@@ -70,7 +70,8 @@ def cond(base,kind,seed):
     return s
 def run():
     n=3000; seeds=30; thrs=[0.65]; base=load(n)
-    comm=base["_comm"].to_numpy()
+    # node i holds the i-th agent after sorting by age (order() below), so communities must follow that order
+    comm=base["_comm"].to_numpy()[order(base)]
     reach={k:{t:[] for t in thrs} for k in ["real","within","shuffle","block"]}
     # avg degree report
     degs=[]

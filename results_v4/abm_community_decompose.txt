@@ -1,3 +1,4 @@
-Community-network robustness (planted age x education homophily communities; mean degree ~7.5; n=3000; 30 seeds; 95% CI)
-thr 0.65: inter-attribute joint -0.69 ± 0.78 (null-control, CI includes 0) | demographic coupling -1.58 ± 1.10 (significant) | full -2.26 ± 0.82
-=> demographic coupling carries the reach gap while the inter-attribute joint stays null, replicating the small-world finding under realistic community structure. Magnitude smaller than small-world; sign topology-dependent (as for scale-free).
+Community-network robustness (planted age x education homophily communities; mean degree ~7.4 after isolation thinning; n=3000; 30 seeds; 95% CI)
+thr 0.65: inter-attribute joint -0.12 ± 0.52 (null-control, CI includes 0) | demographic coupling +17.17 ± 0.78 (significant) | full +17.05 ± 0.94 | block-real +19.12
+=> demographic coupling carries the reach gap while the inter-attribute joint stays null, as on the small-world network, with a larger coupling effect.
+Corrected 2026-10-24: the earlier run assigned communities in unsorted sample order while agents were placed on nodes in age order, so communities were unrelated to age and education (same-age-band edge share 0.22 vs 0.84 after the fix; random 0.23). That run gave coupling -1.58 ± 1.10.
