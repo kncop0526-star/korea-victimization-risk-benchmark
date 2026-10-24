@@ -56,3 +56,6 @@ results/*_FILLED.xlsx
 
 # Local staging for files pending manual deletion
 _to_delete/
+
+# Session context saves (local only, never publish)
+_context/
