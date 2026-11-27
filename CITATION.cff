@@ -26,15 +26,28 @@ keywords:
   - agent-based modeling
   - police administration
   - Korea
-doi: "10.5281/zenodo.20500537"
-version: 1.1.0
-date-released: "2026-06-02"
+doi: "10.5281/zenodo.20484545"
+version: 1.3.0
+date-released: "2026-11-27"
+preferred-citation:
+  type: article
+  title: "Behavioral Attributes for Synthetic Populations: Which Fused Structure an Agent-Based Model Needs"
+  authors:
+    - given-names: "Chihwa"
+      family-names: "Lee"
+      orcid: "https://orcid.org/0009-0009-6959-1797"
+  journal: "Journal of Artificial Societies and Social Simulation"
+  volume: 30
+  issue: 1
+  start: 6
+  year: 2027
+  doi: "10.18564/jasss.6437"
 references:
   - type: dataset
     title: "Nemotron-Personas-Korea"
     authors:
       - name: "NVIDIA"
-    year: 2025
+    year: 2026
     publisher:
       name: "Hugging Face"
     url: "https://huggingface.co/datasets/nvidia/Nemotron-Personas-Korea"

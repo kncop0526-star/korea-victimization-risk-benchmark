@@ -12,7 +12,7 @@ License text: https://creativecommons.org/licenses/by/4.0/
 
 This repository is a **derivative work** of:
 
-> **NVIDIA. (2025). Nemotron-Personas-Korea** [Dataset]. Hugging Face.
+> **NVIDIA. (2026). Nemotron-Personas-Korea** [Dataset]. Hugging Face.
 > https://huggingface.co/datasets/nvidia/Nemotron-Personas-Korea — Licensed under CC-BY-4.0.
 
 Under CC-BY-4.0 you **must**, in any use or redistribution:
@@ -39,7 +39,7 @@ The maintainer does **not** claim authorship or ownership of the underlying NVID
 @dataset{nvidia_nemotron_personas_korea,
   author    = {NVIDIA},
   title     = {Nemotron-Personas-Korea},
-  year      = {2025},
+  year      = {2026},
   publisher = {Hugging Face},
   url       = {https://huggingface.co/datasets/nvidia/Nemotron-Personas-Korea},
   license   = {CC-BY-4.0}
